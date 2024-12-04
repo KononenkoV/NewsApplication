@@ -8,7 +8,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
     }
     
-//Комментарий
+
 
 }
 
