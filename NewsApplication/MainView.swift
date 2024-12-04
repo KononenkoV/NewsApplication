@@ -8,6 +8,6 @@ class MainView: UIViewController {
         super.viewDidLoad()
     }
     
-// Это комментос из репозитория
+// Это комментос из репозитория 2
 
 }
