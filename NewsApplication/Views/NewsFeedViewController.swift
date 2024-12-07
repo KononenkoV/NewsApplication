@@ -30,7 +30,7 @@ class NewsFeedViewController: UIViewController {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.addSubview(tableView)
         return $0
-    }(UIView(frame: view.frame))
+    }(UIView())
     
         
     private lazy var tableView: UITableView = {
@@ -41,7 +41,7 @@ class NewsFeedViewController: UIViewController {
            return $0
        }(UITableView(frame:view.frame, style: .plain))
     
-    
+     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -56,15 +56,17 @@ class NewsFeedViewController: UIViewController {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+            scrollContent.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0),
+            scrollContent.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0),
+            scrollContent.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0),
+            scrollContent.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0),
+            scrollView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
-//            welcomeTitle.topAnchor.constraint(equalTo: view.topAnchor, constant: 140),
-//            welcomeTitle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-//            welcomeTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-//            
+            tableView.topAnchor.constraint(equalTo: scrollContent.topAnchor, constant: 0),
+            tableView.trailingAnchor.constraint(equalTo: scrollContent.trailingAnchor, constant: 0),
+            tableView.leadingAnchor.constraint(equalTo: scrollContent.leadingAnchor, constant: 0),
+            tableView.bottomAnchor.constraint(equalTo: scrollContent.bottomAnchor, constant: 0),
+//
 //            welcomeSubtitle.topAnchor.constraint(equalTo: welcomeTitle.bottomAnchor, constant: 6),
 //            welcomeSubtitle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
 //            welcomeSubtitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
