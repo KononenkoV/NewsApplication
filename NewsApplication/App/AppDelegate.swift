@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  NewsApplication
 //
-//  Created by Вадим Кононенко on 04.12.2024.
+//  Created by Вадим Кононенко on 07.12.2024.
 //
 
 import UIKit

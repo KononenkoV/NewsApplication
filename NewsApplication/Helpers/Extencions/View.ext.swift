@@ -1,8 +1,14 @@
 //
 //  View.ext.swift
-//  NewsApplication
+//  NewsPostVK
 //
 //  Created by Олег Дмитриев on 07.12.2024.
 //
 
-import Foundation
+import UIKit
+
+extension UIView {
+    func addSubviews(_ subviews: UIView...) {
+        subviews.forEach(addSubview)
+    }
+}

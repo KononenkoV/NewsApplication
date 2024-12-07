@@ -1,8 +1,12 @@
 //
 //  UIBuilder.swift
-//  NewsApplication
+//  NewsPostVK
 //
 //  Created by Олег Дмитриев on 07.12.2024.
 //
 
-import Foundation
+import UIKit
+
+class UIBuilder {
+    
+}
