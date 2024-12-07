@@ -66,14 +66,6 @@ class NewsFeedViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: scrollContent.trailingAnchor, constant: 0),
             tableView.leadingAnchor.constraint(equalTo: scrollContent.leadingAnchor, constant: 0),
             tableView.bottomAnchor.constraint(equalTo: scrollContent.bottomAnchor, constant: 0),
-//
-//            welcomeSubtitle.topAnchor.constraint(equalTo: welcomeTitle.bottomAnchor, constant: 6),
-//            welcomeSubtitle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-//            welcomeSubtitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            
-//            welcomeButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40),
-//            welcomeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-//            welcomeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             
         ])
     }
