@@ -66,7 +66,7 @@ class NewsFeedViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: scrollContent.trailingAnchor, constant: 0),
             tableView.leadingAnchor.constraint(equalTo: scrollContent.leadingAnchor, constant: 0),
             tableView.bottomAnchor.constraint(equalTo: scrollContent.bottomAnchor, constant: 0),
-            //sdfsdfsdfsdf
+
         ])
     }
 }
