@@ -14,7 +14,7 @@ final class TabBarController: UITabBarController {
         
         self.tabBar.tintColor = .appBlack
         self.tabBar.backgroundColor = .appWhite
-        self.tabBar.unselectedItemTintColor = .appBlack
+        self.tabBar.unselectedItemTintColor = .appGrayText
         
         setupTabs()
     }

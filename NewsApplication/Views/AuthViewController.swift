@@ -3,7 +3,7 @@
 //  NewsPostVK
 //
 //  Created by Олег Дмитриев on 07.12.2024.
-//  Dev-0.0.1
+//
 
 import UIKit
 
