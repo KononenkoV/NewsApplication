@@ -24,6 +24,7 @@ final class TabBarController: UITabBarController {
         let errNilVC = self.createNav(with: "Error Nil Vk", and: UIImage(named: "vk-logo"), vc: ErrorNilNewsViewController())
         let repoNewsVC = self.createNav(with: "Хранилище", and: UIImage(systemName: "star.fill"), vc: RepositoryNewsViewController())
         
+
         self.setViewControllers([newsVC, errNilVC, repoNewsVC], animated: false)
     }
     
