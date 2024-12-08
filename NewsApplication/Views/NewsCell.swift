@@ -3,61 +3,97 @@ import UIKit
 class NewsCell: UITableViewCell {
 
     static let reuseId = "NewsCell"
+    lazy var isPressedHeart: Bool = false
     
+//    Вью подложка
     lazy var backView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.layer.cornerRadius = 30
-//      $0.heightAnchor.constraint(equalToConstant: 200).isActive = true
-        $0.backgroundColor = .systemGray6
+        $0.layer.cornerRadius = 20
+//        $0.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        $0.backgroundColor = .appNewsBackgorundGray
         return $0
     }(UIView())
     
-    lazy var backImage: UIImageView = {
+//    Титульная картинка новостей
+    lazy var newsImage: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.heightAnchor.constraint(equalToConstant: 163).isActive = true
-        $0.layer.cornerRadius = 30
+        $0.heightAnchor.constraint(equalToConstant: 268).isActive = true
+        $0.layer.cornerRadius = 20
         $0.clipsToBounds = true
-        $0.contentMode = .scaleToFill
+        $0.contentMode = .scaleAspectFill
         return $0
     }(UIImageView())
     
-//    lazy var nameSurname: UILabel = AppLabel(labelFont: .systemFont(ofSize: 24, weight: .black), labelText: "", labelColor: .white)
-    
-//    lazy var insideText: UILabel = AppLabel(labelFont: .systemFont(ofSize: 14, weight: .light), labelText: "", labelColor: .white)
-
-    lazy var smallImage1: UIImageView = createImage()
-    
-    lazy var smallImage2: UIImageView = createImage()
-    
-    lazy var smallImage3: UIImageView = createImage()
-    
-    lazy var blackButton: UIButton = {
+//    Звездочка избранного
+    lazy var starBtn: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.backgroundColor = .black
-        $0.layer.cornerRadius = 15
-        $0.setTitle("Press me", for: .normal)
-        $0.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        $0.heightAnchor.constraint(equalToConstant: 21).isActive = true
+        $0.widthAnchor.constraint(equalToConstant: 21).isActive = true
+        $0.setImage(isPressedHeart ? .starFilled : .star,  for: .normal)
+        $0.tintColor = .black
         return $0
-    }(UIButton())
+    }(UIButton(primaryAction: starBtnAction))
+    
+    lazy var starBtnAction: UIAction = UIAction { [weak self] _ in
+        self?.isPressedHeart.toggle()
+        self?.starBtn.setImage(self!.isPressedHeart ? .starFilled : .star,  for: .normal)
+          }
+    
+//    Надпись источник
+    lazy var sourceText: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.numberOfLines = 1
+        $0.textColor = .black
+        $0.font = .systemFont(ofSize: 14, weight: .semibold)
+        return $0
+    }(UILabel())
+    
+//    Надпись дата
+        lazy var dateText: UILabel = {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.numberOfLines = 1
+            $0.textColor = .appGrayText
+            $0.font = .systemFont(ofSize: 14, weight: .semibold)
+            return $0
+        }(UILabel())
+    
+//    Надпись заголовок
+        lazy var titleText: UILabel = {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.numberOfLines = 0
+            $0.textColor = .black
+            $0.font = .systemFont(ofSize: 20, weight: .black)
+            return $0
+        }(UILabel())
+    
+//    Основной текст статьи
+        lazy var newsText: UILabel = {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.numberOfLines = 0
+            $0.textColor = .black
+            $0.font = .systemFont(ofSize: 16, weight: .light)
+            return $0
+        }(UILabel())
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.backgroundColor = .clear
         contentView.addSubview(backView)
-        
-        backView.addSubview(backImage)
-        backView.addSubview(smallImage1)
-        backView.addSubview(smallImage2)
-        backView.addSubview(smallImage3)
-        backView.addSubview(blackButton)
+        backView.addSubview(newsImage)
+        backView.addSubview(starBtn)
+        backView.addSubview(sourceText)
+        backView.addSubview(dateText)
+        backView.addSubview(titleText)
+        backView.addSubview(newsText)
     }
     
     func setupView(item: NewsEntity){
-        backImage.image = UIImage(named: item.thumbnail)
-        smallImage1.image = UIImage(named: item.thumbnail)
-        smallImage2.image = UIImage(named: item.thumbnail)
-        smallImage3.image = UIImage(named: item.thumbnail)
-        
+        newsImage.image = UIImage(named: item.thumbnail)
+        sourceText.text = item.urlText
+        dateText.text = item.date
+        titleText.text = item.title
+        newsText.text = item.descr
+ 
         setConstraints()
     }
     
@@ -69,44 +105,32 @@ class NewsCell: UITableViewCell {
             backView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             backView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
             
-            backImage.topAnchor.constraint(equalTo: backView.topAnchor, constant: 15),
-            backImage.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 20),
-            backImage.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -20),
+            newsImage.topAnchor.constraint(equalTo: backView.topAnchor, constant: 0),
+            newsImage.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 0),
+            newsImage.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: 0),
             
-            smallImage1.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 20),
-            smallImage1.topAnchor.constraint(equalTo: backImage.bottomAnchor, constant: 16),
-            smallImage1.widthAnchor.constraint(equalTo: backView.widthAnchor, multiplier: 0.3, constant: -8),
-
-            smallImage2.centerXAnchor.constraint(equalTo: backView.centerXAnchor, constant: 0),
-            smallImage2.topAnchor.constraint(equalTo: backImage.bottomAnchor, constant: 16),
-            smallImage2.widthAnchor.constraint(equalTo: backView.widthAnchor, multiplier: 0.3, constant: -8),
-        
-            smallImage3.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -20),
-            smallImage3.topAnchor.constraint(equalTo: backImage.bottomAnchor, constant: 16),
-            smallImage3.widthAnchor.constraint(equalTo: backView.widthAnchor, multiplier: 0.3, constant: -8),
+            starBtn.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -20),
+            starBtn.topAnchor.constraint(equalTo: backView.topAnchor, constant: 20),
             
-            blackButton.topAnchor.constraint(equalTo: smallImage1.bottomAnchor, constant: 16),
-            blackButton.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 20),
-            blackButton.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -20),
+            sourceText.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 18),
+            sourceText.topAnchor.constraint(equalTo: newsImage.bottomAnchor, constant: 10),
             
-            backView.bottomAnchor.constraint(equalTo: blackButton.bottomAnchor, constant: 15)
+            dateText.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -18),
+            dateText.topAnchor.constraint(equalTo: newsImage.bottomAnchor, constant: 10),
+            
+            titleText.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 18),
+            titleText.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -18),
+            titleText.topAnchor.constraint(equalTo: sourceText.bottomAnchor, constant: 10),
+            
+            newsText.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 18),
+            newsText.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -18),
+            newsText.topAnchor.constraint(equalTo: titleText.bottomAnchor, constant: 10),
+            
+           backView.bottomAnchor.constraint(equalTo: newsText.bottomAnchor, constant: 20)
 
         ])
     }
-    
-
-
-    private func createImage() -> UIImageView {
-        {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.heightAnchor.constraint(equalToConstant: 100).isActive = true
-            $0.layer.cornerRadius = 20
-            $0.clipsToBounds = true
-            $0.contentMode = .scaleToFill
-            return $0
-        }(UIImageView())
-    }
-    
+        
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

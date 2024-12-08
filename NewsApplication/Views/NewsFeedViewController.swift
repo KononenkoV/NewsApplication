@@ -10,15 +10,13 @@ import UIKit
 class NewsFeedViewController: UIViewController {
     
     var mok: [NewsEntity] = [
-            NewsEntity(thumbnail: "mokphoto1", title: "Заголовок новости 1", date: "13.12.24", urlText: "www.mail.ru", descr: "Полный текст новости"),
-            NewsEntity(thumbnail: "mokphoto2", title: "Заголовок новости 2", date: "13.11.24", urlText: "www.mail.ru", descr: "Полный текст новости"),
-            NewsEntity(thumbnail: "mokphoto1", title: "Заголовок новости 3", date: "12.12.24", urlText: "www.mail.ru", descr: "Полный текст новости"),
-            NewsEntity(thumbnail: "mokphoto2", title: "Заголовок новости 2", date: "13.11.24", urlText: "www.mail.ru", descr: "Полный текст новости"),
-            NewsEntity(thumbnail: "mokphoto1", title: "Заголовок новости 1", date: "13.12.24", urlText: "www.mail.ru", descr: "Полный текст новости"),
-            NewsEntity(thumbnail: "mokphoto2", title: "Заголовок новости 2", date: "13.11.24", urlText: "www.mail.ru", descr: "Полный текст новости"),
-            NewsEntity(thumbnail: "mokphoto1", title: "Заголовок новости 3", date: "12.12.24", urlText: "www.mail.ru", descr: "Полный текст новости"),
-            NewsEntity(thumbnail: "mokphoto2", title: "Заголовок новости 2", date: "13.11.24", urlText: "www.mail.ru", descr: "Полный текст новости"),
-    ]
+            NewsEntity(thumbnail: "mokphoto1", title: "This man spent $15,000 making a Tesla Cybertruck out of wood", date: "13.12.24", urlText: "businessinsider.com", descr: "The wooden Cybertruck replica includes LED lights and a X logo. ND - WoodArt A Vietnamese man built a fully functional replica of Tesla's Cybertruck out of wood. Truong Van Dao's been driving his family around in the car, which is being sent to Elon Musk"),
+            NewsEntity(thumbnail: "mokphoto2", title: "Huawei to move smart car operations to new joint company with Changan", date: "13.11.24", urlText: "www.mail.ru", descr: "China's Huawei said on Sunday it will move core technologies and resources in its smart car unit, which has chalked up robust sales for a number of new vehicles, to a new joint company owned up to 40% by automaker Changan Auto. The new company will engage in"),    NewsEntity(thumbnail: "mokphoto1", title: "This man spent $15,000 making a Tesla Cybertruck out of wood", date: "13.12.24", urlText: "businessinsider.com", descr: "The wooden Cybertruck replica includes LED lights and a X logo. ND - WoodArt A Vietnamese man built a fully functional replica of Tesla's Cybertruck out of wood. Truong Van Dao's been driving his family around in the car, which is being sent to Elon Musk"),
+            NewsEntity(thumbnail: "mokphoto2", title: "Huawei to move smart car operations to new joint company with Changan", date: "13.11.24", urlText: "www.mail.ru", descr: "China's Huawei said on Sunday it will move core technologies and resources in its smart car unit, which has chalked up robust sales for a number of new vehicles, to a new joint company owned up to 40% by automaker Changan Auto. The new company will engage in"),    NewsEntity(thumbnail: "mokphoto1", title: "This man spent $15,000 making a Tesla Cybertruck out of wood", date: "13.12.24", urlText: "businessinsider.com", descr: "The wooden Cybertruck replica includes LED lights and a X logo. ND - WoodArt A Vietnamese man built a fully functional replica of Tesla's Cybertruck out of wood. Truong Van Dao's been driving his family around in the car, which is being sent to Elon Musk"),
+            NewsEntity(thumbnail: "mokphoto2", title: "Huawei to move smart car operations to new joint company with Changan", date: "13.11.24", urlText: "www.mail.ru", descr: "China's Huawei said on Sunday it will move core technologies and resources in its smart car unit, which has chalked up robust sales for a number of new vehicles, to a new joint company owned up to 40% by automaker Changan Auto. The new company will engage in"),    NewsEntity(thumbnail: "mokphoto1", title: "This man spent $15,000 making a Tesla Cybertruck out of wood", date: "13.12.24", urlText: "businessinsider.com", descr: "The wooden Cybertruck replica includes LED lights and a X logo. ND - WoodArt A Vietnamese man built a fully functional replica of Tesla's Cybertruck out of wood. Truong Van Dao's been driving his family around in the car, which is being sent to Elon Musk"),
+            NewsEntity(thumbnail: "mokphoto2", title: "Huawei to move smart car operations to new joint company with Changan", date: "13.11.24", urlText: "www.mail.ru", descr: "China's Huawei said on Sunday it will move core technologies and resources in its smart car unit, which has chalked up robust sales for a number of new vehicles, to a new joint company owned up to 40% by automaker Changan Auto. The new company will engage in"),    NewsEntity(thumbnail: "mokphoto1", title: "This man spent $15,000 making a Tesla Cybertruck out of wood", date: "13.12.24", urlText: "businessinsider.com", descr: "The wooden Cybertruck replica includes LED lights and a X logo. ND - WoodArt A Vietnamese man built a fully functional replica of Tesla's Cybertruck out of wood. Truong Van Dao's been driving his family around in the car, which is being sent to Elon Musk"),
+            NewsEntity(thumbnail: "mokphoto2", title: "Huawei to move smart car operations to new joint company with Changan", date: "13.11.24", urlText: "www.mail.ru", descr: "China's Huawei said on Sunday it will move core technologies and resources in its smart car unit, which has chalked up robust sales for a number of new vehicles, to a new joint company owned up to 40% by automaker Changan Auto. The new company will engage in")
+            ]
         
     lazy var scrollView: UIScrollView = {
         $0.backgroundColor = .clear
@@ -32,7 +30,6 @@ class NewsFeedViewController: UIViewController {
         return $0
     }(UIView())
     
-        
     private lazy var tableView: UITableView = {
            $0.dataSource = self
            $0.delegate = self
@@ -41,7 +38,6 @@ class NewsFeedViewController: UIViewController {
            return $0
        }(UITableView(frame:view.frame, style: .plain))
     
-     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
