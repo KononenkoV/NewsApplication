@@ -18,22 +18,22 @@ class NewsFeedViewController: UIViewController {
             NewsEntity(thumbnail: "mokphoto2", title: "Huawei to move smart car operations to new joint company with Changan", date: "13.11.24", urlText: "www.mail.ru", descr: "China's Huawei said on Sunday it will move core technologies and resources in its smart car unit, which has chalked up robust sales for a number of new vehicles, to a new joint company owned up to 40% by automaker Changan Auto. The new company will engage in")
             ]
         
-    lazy var scrollView: UIScrollView = {
-        $0.backgroundColor = .clear
-        $0.addSubview(scrollContent)
-        return $0
-    }(UIScrollView(frame: view.frame))
+//    lazy var scrollView: UIScrollView = {
+//        $0.backgroundColor = .clear
+//        $0.addSubview(scrollContent)
+//        return $0
+//    }(UIScrollView(frame: view.frame))
     
-    lazy var scrollContent: UIView = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.addSubview(tableView)
-        return $0
-    }(UIView())
+//    lazy var scrollContent: UIView = {
+//        $0.translatesAutoresizingMaskIntoConstraints = false
+//        $0.addSubview(tableView)
+//        return $0
+//    }(UIView())
     
     private lazy var tableView: UITableView = {
-           $0.dataSource = self
-           $0.delegate = self
-           $0.separatorStyle = .none
+        $0.dataSource = self
+        $0.delegate = self
+        $0.separatorStyle = .none
         $0.register(NewsCell.self, forCellReuseIdentifier: NewsCell.reuseId)
            return $0
        }(UITableView(frame:view.frame, style: .plain))
@@ -44,7 +44,7 @@ class NewsFeedViewController: UIViewController {
         title = "Новости"
         navigationController?.navigationBar.prefersLargeTitles = true
         
-        view.addSubviews(scrollView)
+        view.addSubviews(tableView)
         
         setupConstraints()
     }
@@ -52,16 +52,10 @@ class NewsFeedViewController: UIViewController {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             
-            scrollContent.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0),
-            scrollContent.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0),
-            scrollContent.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0),
-            scrollContent.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0),
-            scrollContent.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            
-            tableView.topAnchor.constraint(equalTo: scrollContent.topAnchor, constant: 0),
-            tableView.trailingAnchor.constraint(equalTo: scrollContent.trailingAnchor, constant: 0),
-            tableView.leadingAnchor.constraint(equalTo: scrollContent.leadingAnchor, constant: 0),
-            tableView.bottomAnchor.constraint(equalTo: scrollContent.bottomAnchor, constant: 0),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
 
         ])
     }
