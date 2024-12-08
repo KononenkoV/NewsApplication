@@ -21,7 +21,7 @@ class AuthViewController: UIViewController {
     lazy var welcomeTitle: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "Error Nil"
-        $0.font = .systemFont(ofSize: 30, weight: .semibold)
+        $0.font = .montserrat(.mBold, 30)
         $0.textColor = .appWhite
         return $0
     }(UILabel())
@@ -29,7 +29,7 @@ class AuthViewController: UIViewController {
     lazy var welcomeSubtitle: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "Святой ёжик team"
-        $0.font = .systemFont(ofSize: 16, weight: .regular)
+        $0.font = .montserrat(.mRegular, 16)
         $0.textColor = .appWhite
         return $0
     }(UILabel())
