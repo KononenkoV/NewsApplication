@@ -9,7 +9,6 @@ class NewsCell: UITableViewCell {
     lazy var backView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.layer.cornerRadius = 20
-//        $0.heightAnchor.constraint(equalToConstant: 200).isActive = true
         $0.backgroundColor = .appNewsBackgorundGray
         return $0
     }(UIView())
@@ -34,6 +33,8 @@ class NewsCell: UITableViewCell {
         return $0
     }(UIButton(primaryAction: starBtnAction))
     
+    
+//    Экшен звездочки избранного
     lazy var starBtnAction: UIAction = UIAction { [weak self] _ in
         self?.isPressedHeart.toggle()
         self?.starBtn.setImage(self!.isPressedHeart ? .starFilled : .star,  for: .normal)
@@ -42,6 +43,7 @@ class NewsCell: UITableViewCell {
 //    Надпись источник
     lazy var sourceText: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.widthAnchor.constraint(equalToConstant: 150).isActive = true
         $0.numberOfLines = 1
         $0.textColor = .black
         $0.font = .systemFont(ofSize: 14, weight: .semibold)
@@ -69,7 +71,7 @@ class NewsCell: UITableViewCell {
 //    Основной текст статьи
         lazy var newsText: UILabel = {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.numberOfLines = 0
+            $0.numberOfLines = 6
             $0.textColor = .black
             $0.font = .systemFont(ofSize: 16, weight: .light)
             return $0
@@ -86,7 +88,8 @@ class NewsCell: UITableViewCell {
         backView.addSubview(titleText)
         backView.addSubview(newsText)
     }
-    
+
+//    Ностройка ячейки
     func setupView(item: NewsEntity){
         newsImage.image = UIImage(named: item.thumbnail)
         sourceText.text = item.urlText
