@@ -62,33 +62,7 @@ class NewsFeedViewController: UIViewController {
 
         ])
     }
-    
-    // MARK: Search filter
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        let text: String = self.searchBar.text ?? ""
-//        self.filteredNews = mok.filter { $0.title.contains(text) }
-//        
-//        self.tableView.reloadData()
-//        self.searchBar.delegate = self
-//        
-//    }
 }
-
-//// MARK: UISearchBarDelegate
-//extension NewsFeedViewController: UISearchBarDelegate {
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        guard let text = searchBar.text else { return }
-//        searchBar.resignFirstResponder()
-//        mok.removeAll()
-//    }
-//}
-//
-//// MARK:
-//extension NewsFeedViewController: UISearchResultsUpdating {
-//    func updateSearchResults(for searchController: UISearchController) {
-//        guard let text = searchController.searchBar.text else { return }
-//    }
-//}
 
 
 extension NewsFeedViewController: UITableViewDataSource , UITableViewDelegate, UISearchBarDelegate {
