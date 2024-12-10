@@ -18,16 +18,26 @@ class NewsFeedViewController: UIViewController {
             NewsEntity(thumbnail: "mokphoto2", title: "Huawei to move smart car operations to new joint company with Changan", date: "13.11.24", urlText: "www.mail.ru", descr: "China's Huawei said on Sunday it will move core technologies and resources in its smart car unit, which has chalked up robust sales for a number of new vehicles, to a new joint company owned up to 40% by automaker Changan Auto. The new company will engage in")
             ]
     
+//    Переменная с результатами поиска
     var searchedMok = [NewsEntity]()
-
     var isSearching = false
-    var searchBar = UISearchBar()
+   
+    lazy var searchBar: UISearchBar = {
+        $0.delegate = self
+        $0.sizeToFit()
+        $0.searchBarStyle = .prominent
+        $0.placeholder = "Поиск новости"
+        $0.searchTextField.backgroundColor = .white.withAlphaComponent(0.5)
+        $0.tintColor = .black.withAlphaComponent(0.5)
+        return $0
+    }(UISearchBar())
     
     private lazy var tableView: UITableView = {
         $0.dataSource = self
         $0.delegate = self
         $0.separatorStyle = .none
         $0.register(NewsCell.self, forCellReuseIdentifier: NewsCell.reuseId)
+        $0.backgroundColor = .clear
            return $0
        }(UITableView(frame:view.frame, style: .plain))
     
@@ -36,19 +46,10 @@ class NewsFeedViewController: UIViewController {
         view.backgroundColor = .appNewsBg
         title = "Новости"
         navigationController?.navigationBar.prefersLargeTitles = true
-        
+        navigationController?.hidesBarsOnSwipe = true
+        navigationItem.titleView = searchBar
         view.addSubviews(tableView)
 
-        searchBar.delegate = self
-        searchBar.sizeToFit()
-        searchBar.searchBarStyle = .prominent
-        searchBar.placeholder = "Поиск новости VK..."
-        searchBar.tintColor = UIColor.appGrayText
-        searchBar.barTintColor = UIColor.appBlack
-
-        navigationItem.titleView = searchBar
-        navigationController?.hidesBarsOnSwipe = true
-        
         setupConstraints()
     }
     
@@ -64,7 +65,7 @@ class NewsFeedViewController: UIViewController {
     }
 }
 
-
+//Расширение для таблицы
 extension NewsFeedViewController: UITableViewDataSource , UITableViewDelegate, UISearchBarDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isSearching {
@@ -78,6 +79,7 @@ extension NewsFeedViewController: UITableViewDataSource , UITableViewDelegate, U
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: NewsCell.reuseId, for: indexPath) as! NewsCell
 
+//        Меняем содержимое таблицы если идет поиск
         if isSearching {
             let item = searchedMok[indexPath.row]
             cell.setupView(item: item)
@@ -93,6 +95,7 @@ extension NewsFeedViewController: UITableViewDataSource , UITableViewDelegate, U
 //    При нажатии на ячейку таблицы переход в детальную новости
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = NewsDetailView()
+//        Задаю параметры содержимого для детальной новости
         vc.imageSource = mok[indexPath.row].thumbnail
         vc.titleText = mok[indexPath.row].title
         vc.descrText = mok[indexPath.row].descr
@@ -102,19 +105,18 @@ extension NewsFeedViewController: UITableViewDataSource , UITableViewDelegate, U
         navigationController?.pushViewController(vc, animated: true)
     }
     
+//    Поиск ищет только по заголовку поле title 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchedMok = mok.filter({
-            $0.title.lowercased().prefix(searchText.count) == searchText.lowercased()
-//            $0.title.lowercased().prefixMatch(of: searchText.lowercased()) == searchText.lowercased()
-        })
-        isSearching = true
+        if searchText.isEmpty {
+            isSearching = false
+            
+        } else if searchText.count > 2 {
+            searchedMok = mok.filter {
+                $0.title.lowercased().contains(searchText.lowercased())
+            }
+            isSearching = true
+        }
         tableView.reloadData()
     }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        self.isSearching = false
-        searchBar.text = ""
-        tableView.reloadData()
-     }
 }
 
