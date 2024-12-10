@@ -5,7 +5,7 @@ class NewsCell: UITableViewCell {
     static let reuseId = "NewsCell"
     lazy var isPressedHeart: Bool = false
     
-//    Вью подложка
+    // Вью подложка
     lazy var backView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.layer.cornerRadius = 20
@@ -13,7 +13,7 @@ class NewsCell: UITableViewCell {
         return $0
     }(UIView())
     
-//    Титульная картинка новостей
+    // Титульная картинка новостей
     lazy var newsImage: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.heightAnchor.constraint(equalToConstant: 268).isActive = true
@@ -23,7 +23,7 @@ class NewsCell: UITableViewCell {
         return $0
     }(UIImageView())
     
-//    Звездочка избранного
+    // Звездочка избранного
     lazy var starBtn: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.heightAnchor.constraint(equalToConstant: 21).isActive = true
@@ -34,13 +34,13 @@ class NewsCell: UITableViewCell {
     }(UIButton(primaryAction: starBtnAction))
     
     
-//    Экшен звездочки избранного
+    // Экшен звездочки избранного
     lazy var starBtnAction: UIAction = UIAction { [weak self] _ in
         self?.isPressedHeart.toggle()
         self?.starBtn.setImage(self!.isPressedHeart ? .starFilled : .star,  for: .normal)
           }
     
-//    Надпись источник
+    // Надпись источник
     lazy var sourceText: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.widthAnchor.constraint(equalToConstant: 150).isActive = true
@@ -50,32 +50,32 @@ class NewsCell: UITableViewCell {
         return $0
     }(UILabel())
     
-//    Надпись дата
-        lazy var dateText: UILabel = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.numberOfLines = 1
-            $0.textColor = .appGrayText
-            $0.font = .systemFont(ofSize: 14, weight: .semibold)
-            return $0
-        }(UILabel())
-    
-//    Надпись заголовок
-        lazy var titleText: UILabel = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.numberOfLines = 0
-            $0.textColor = .black
-            $0.font = .systemFont(ofSize: 20, weight: .black)
-            return $0
-        }(UILabel())
-    
-//    Основной текст статьи
-        lazy var newsText: UILabel = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.numberOfLines = 6
-            $0.textColor = .black
-            $0.font = .systemFont(ofSize: 16, weight: .light)
-            return $0
-        }(UILabel())
+    // Надпись дата
+    lazy var dateText: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.numberOfLines = 1
+        $0.textColor = .appGrayText
+        $0.font = .systemFont(ofSize: 14, weight: .semibold)
+        return $0
+    }(UILabel())
+
+    // Надпись заголовок
+    lazy var titleText: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.numberOfLines = 0
+        $0.textColor = .black
+        $0.font = .systemFont(ofSize: 20, weight: .black)
+        return $0
+    }(UILabel())
+
+    // Основной текст статьи
+    lazy var newsText: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.numberOfLines = 6
+        $0.textColor = .black
+        $0.font = .systemFont(ofSize: 16, weight: .light)
+        return $0
+    }(UILabel())
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -89,7 +89,7 @@ class NewsCell: UITableViewCell {
         backView.addSubview(newsText)
     }
 
-//    Ностройка ячейки
+    // Настройка ячейки
     func setupView(item: NewsEntity){
         newsImage.image = UIImage(named: item.thumbnail)
         sourceText.text = item.urlText

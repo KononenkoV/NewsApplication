@@ -23,98 +23,93 @@ class NewsDetailView: UIViewController {
     
     lazy var scrollContent: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.addSubview(newsImage)
-        $0.addSubview(sourceTextLabel)
-        $0.addSubview(dateTextLabel)
-        $0.addSubview(titleTextLabel)
-        $0.addSubview(newsTextLabel)
-        $0.addSubview(goToSiteBtn)
+        $0.addSubviews(newsImage, sourceTextLabel, dateTextLabel, dateTextLabel, titleTextLabel, newsTextLabel, goToSiteBtn)
         return $0
     }(UIView())
     
-//    Титульная картинка новостей
-        lazy var newsImage: UIImageView = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.heightAnchor.constraint(equalToConstant: 300).isActive = true
-            $0.image = UIImage(named: imageSource)
-            $0.clipsToBounds = true
-            $0.contentMode = .scaleAspectFill
+    // Титульная картинка новостей
+    lazy var newsImage: UIImageView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        $0.image = UIImage(named: imageSource)
+        $0.clipsToBounds = true
+        $0.contentMode = .scaleAspectFill
           
-//            Градиент
-            let gradientLayer = CAGradientLayer()
-               gradientLayer.colors = [
-                UIColor.clear.cgColor,
-                UIColor.black.withAlphaComponent(0.8).cgColor,
-               ]
-               gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.6) // Снизу
-               gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)   // Сверху
-               gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 300)
+        // Градиент
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [
+            UIColor.clear.cgColor,
+            UIColor.black.withAlphaComponent(0.8).cgColor,
+        ]
+       gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.6) // Снизу
+       gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)   // Сверху
+       gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 300)
 
-            $0.layer.addSublayer(gradientLayer)
-            
-            return $0
-        }(UIImageView())
-    
-//    Надпись источник
-        lazy var sourceTextLabel: UILabel = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.widthAnchor.constraint(equalToConstant: 150).isActive = true
-            $0.text = linkText
-            $0.numberOfLines = 1
-            $0.textColor = .white
-            $0.font = .systemFont(ofSize: 14, weight: .semibold)
-            return $0
-        }(UILabel())
+        $0.layer.addSublayer(gradientLayer)
         
-//    Надпись дата
-            lazy var dateTextLabel: UILabel = {
-                $0.translatesAutoresizingMaskIntoConstraints = false
-                $0.numberOfLines = 1
-                $0.text = dateText
-                $0.textColor = .white
-                $0.font = .systemFont(ofSize: 14, weight: .semibold)
-                return $0
-            }(UILabel())
-        
-//    Надпись заголовок
-            lazy var titleTextLabel: UILabel = {
-                $0.translatesAutoresizingMaskIntoConstraints = false
-                $0.numberOfLines = 0
-                $0.text = titleText
-                $0.textColor = .black
-                $0.font = .systemFont(ofSize: 20, weight: .black)
-                return $0
-            }(UILabel())
-        
-//    Основной текст статьи
-            lazy var newsTextLabel: UILabel = {
-                $0.translatesAutoresizingMaskIntoConstraints = false
-                $0.numberOfLines = 0
-                $0.text = descrText
-                $0.textColor = .black
-                $0.font = .systemFont(ofSize: 16, weight: .light)
-                return $0
-            }(UILabel())
+        return $0
+    }(UIImageView())
     
-//    Кнопка перейти на источник
-        lazy var goToSiteBtn: UIButton = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.heightAnchor.constraint(equalToConstant: 58).isActive = true
-            $0.layer.cornerRadius = 30
-            $0.setTitle("Перейти на сайт", for: .normal)
-            $0.backgroundColor = .black
-            $0.setTitleColor(.white, for: .normal)
-            return $0
-        }(UIButton(primaryAction: goToSiteBtnAction))
+    // Надпись источник
+    lazy var sourceTextLabel: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        $0.text = linkText
+        $0.numberOfLines = 1
+        $0.textColor = .white
+        $0.font = .systemFont(ofSize: 14, weight: .semibold)
+        return $0
+    }(UILabel())
+        
+    // Надпись дата
+    lazy var dateTextLabel: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.numberOfLines = 1
+        $0.text = dateText
+        $0.textColor = .white
+        $0.font = .systemFont(ofSize: 14, weight: .semibold)
+        return $0
+    }(UILabel())
+        
+    // Надпись заголовок
+    lazy var titleTextLabel: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.numberOfLines = 0
+        $0.text = titleText
+        $0.textColor = .black
+        $0.font = .systemFont(ofSize: 20, weight: .black)
+        return $0
+    }(UILabel())
+        
+    // Основной текст статьи
+    lazy var newsTextLabel: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.numberOfLines = 0
+        $0.text = descrText
+        $0.textColor = .black
+        $0.font = .systemFont(ofSize: 16, weight: .light)
+        return $0
+    }(UILabel())
     
-//    Здесь переход по ссылке происходит
-        lazy var goToSiteBtnAction: UIAction = UIAction { [weak self] _ in
-            guard let url = URL(string: self!.linkText) else {
-                  print("Некорректный URL")
-                  return
-              }
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-              }
+    // Кнопка перейти на источник
+    lazy var goToSiteBtn: UIButton = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.heightAnchor.constraint(equalToConstant: 58).isActive = true
+        $0.layer.cornerRadius = 30
+        $0.setTitle("Перейти на сайт", for: .normal)
+        $0.backgroundColor = .black
+        $0.setTitleColor(.white, for: .normal)
+        return $0
+    }(UIButton(primaryAction: goToSiteBtnAction))
+    
+    // Здесь переход по ссылке происходит
+    lazy var goToSiteBtnAction: UIAction = UIAction { [weak self] _ in
+        guard let url = URL(string: self!.linkText) else {
+              print("Некорректный URL")
+              return
+        }
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    }
     
     
     override func viewDidLoad() {

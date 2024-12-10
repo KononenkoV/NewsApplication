@@ -84,12 +84,4 @@ class AuthViewController: UIViewController {
         self.delegate?.changeRootVC()
     }
     
-    func showLoginSuccess() {
-        print("showLoginSuccess")
-    }
-    
-    func showLoginError(message: String) {
-        print("showLoginError")
-    }
-    
 }
