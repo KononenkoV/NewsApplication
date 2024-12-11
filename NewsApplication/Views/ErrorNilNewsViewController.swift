@@ -1,6 +1,13 @@
 import UIKit
 
-class ErrorNilNewsViewController: UIViewController {
+protocol ErrorNilNewsViewControllerProtocol: AnyObject{
+    
+}
+
+
+class ErrorNilNewsViewController: UIViewController, ErrorNilNewsViewControllerProtocol {
+    
+    var presenter: ErrorNilNewsPresenterProtocol!
  
         
     var mok: [NewsEntity] = NewsEntity.mockData()

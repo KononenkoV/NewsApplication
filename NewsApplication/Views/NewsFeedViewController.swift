@@ -7,7 +7,13 @@
 
 import UIKit
 
-class NewsFeedViewController: UIViewController {
+protocol NewsFeedViewControllerProtocol: AnyObject{
+    
+}
+
+class NewsFeedViewController: UIViewController, NewsFeedViewControllerProtocol  {
+    
+    var presenter: NewsFeedViewPresenterProtocol!
     
     var mok: [NewsEntity] = NewsEntity.mockData()
     
@@ -61,6 +67,7 @@ class NewsFeedViewController: UIViewController {
 // Расширение для таблицы
 extension NewsFeedViewController: UITableViewDataSource , UITableViewDelegate, UISearchBarDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        Количество ячеек в таблице в зависимости от того, идет ли поиск
         if isSearching {
              return searchedMok.count
          } else {
@@ -88,7 +95,9 @@ extension NewsFeedViewController: UITableViewDataSource , UITableViewDelegate, U
     // При нажатии на ячейку таблицы переход в детальную новости
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = NewsDetailView()
-        // Задаю параметры содержимого для детальной новости
+
+//    Задаю параметры содержимого для детальной новости
+
         vc.imageSource = mok[indexPath.row].thumbnail
         vc.titleText = mok[indexPath.row].title
         vc.descrText = mok[indexPath.row].descr

@@ -45,51 +45,57 @@ class NewsDetailView: UIViewController {
        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)   // Сверху
        gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 300)
 
-        $0.layer.addSublayer(gradientLayer)
-        
-        return $0
-    }(UIImageView())
+
+      $0.layer.addSublayer(gradientLayer)
+            
+            return $0
+        }(UIImageView())
     
-    // Надпись источник
-    lazy var sourceTextLabel: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        $0.text = linkText
-        $0.numberOfLines = 1
-        $0.textColor = .white
-        $0.font = .systemFont(ofSize: 14, weight: .semibold)
-        return $0
-    }(UILabel())
+//    Надпись источник
+        lazy var sourceTextLabel: UILabel = {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.widthAnchor.constraint(equalToConstant: 150).isActive = true
+            $0.text = linkText
+            $0.numberOfLines = 1
+            $0.textColor = .white
+            $0.font = .montserrat(.mRegular, 14)
+//            $0.font = .systemFont(ofSize: 14, weight: .semibold)
+            return $0
+        }(UILabel())
         
-    // Надпись дата
-    lazy var dateTextLabel: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.numberOfLines = 1
-        $0.text = dateText
-        $0.textColor = .white
-        $0.font = .systemFont(ofSize: 14, weight: .semibold)
-        return $0
-    }(UILabel())
+//    Надпись дата
+            lazy var dateTextLabel: UILabel = {
+                $0.translatesAutoresizingMaskIntoConstraints = false
+                $0.numberOfLines = 1
+                $0.text = dateText
+                $0.textColor = .white
+                $0.font = .montserrat(.mRegular, 14)
+//                $0.font = .systemFont(ofSize: 14, weight: .semibold)
+                return $0
+            }(UILabel())
         
-    // Надпись заголовок
-    lazy var titleTextLabel: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.numberOfLines = 0
-        $0.text = titleText
-        $0.textColor = .black
-        $0.font = .systemFont(ofSize: 20, weight: .black)
-        return $0
-    }(UILabel())
+//    Надпись заголовок
+            lazy var titleTextLabel: UILabel = {
+                $0.translatesAutoresizingMaskIntoConstraints = false
+                $0.numberOfLines = 0
+                $0.text = titleText
+                $0.textColor = .black
+                $0.font = .montserrat(.mBold, 20)
+//                $0.font = .systemFont(ofSize: 20, weight: .black)
+                return $0
+            }(UILabel())
         
-    // Основной текст статьи
-    lazy var newsTextLabel: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.numberOfLines = 0
-        $0.text = descrText
-        $0.textColor = .black
-        $0.font = .systemFont(ofSize: 16, weight: .light)
-        return $0
-    }(UILabel())
+//    Основной текст статьи
+            lazy var newsTextLabel: UILabel = {
+                $0.translatesAutoresizingMaskIntoConstraints = false
+                $0.numberOfLines = 0
+                $0.text = descrText
+                $0.textColor = .black
+                $0.font = .montserrat(.mRegular, 16)
+//                $0.font = .systemFont(ofSize: 16, weight: .light)
+                return $0
+            }(UILabel())
+
     
     // Кнопка перейти на источник
     lazy var goToSiteBtn: UIButton = {

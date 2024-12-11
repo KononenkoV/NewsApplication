@@ -46,36 +46,42 @@ class NewsCell: UITableViewCell {
         $0.widthAnchor.constraint(equalToConstant: 150).isActive = true
         $0.numberOfLines = 1
         $0.textColor = .black
-        $0.font = .systemFont(ofSize: 14, weight: .semibold)
+//        $0.font = .systemFont(ofSize: 14, weight: .semibold)
+        $0.font = .montserrat(.mRegular, 14)
         return $0
     }(UILabel())
     
-    // Надпись дата
-    lazy var dateText: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.numberOfLines = 1
-        $0.textColor = .appGrayText
-        $0.font = .systemFont(ofSize: 14, weight: .semibold)
-        return $0
-    }(UILabel())
 
-    // Надпись заголовок
-    lazy var titleText: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.numberOfLines = 0
-        $0.textColor = .black
-        $0.font = .systemFont(ofSize: 20, weight: .black)
-        return $0
-    }(UILabel())
+//    Надпись дата
+        lazy var dateText: UILabel = {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.numberOfLines = 1
+            $0.textColor = .appGrayText
+//            $0.font = .systemFont(ofSize: 14, weight: .semibold)
+            $0.font = .montserrat(.mRegular, 14)
+            return $0
+        }(UILabel())
+    
+//    Надпись заголовок
+        lazy var titleText: UILabel = {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.numberOfLines = 0
+            $0.textColor = .black
+//            $0.font = .systemFont(ofSize: 20, weight: .black)
+            $0.font = .montserrat(.mBold, 20)
+            return $0
+        }(UILabel())
+    
+//    Основной текст статьи
+        lazy var newsText: UILabel = {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.numberOfLines = 6
+            $0.textColor = .black
+//            $0.font = .systemFont(ofSize: 16, weight: .light)
+            $0.font = .montserrat(.mRegular, 16)
+            return $0
+        }(UILabel())
 
-    // Основной текст статьи
-    lazy var newsText: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.numberOfLines = 6
-        $0.textColor = .black
-        $0.font = .systemFont(ofSize: 16, weight: .light)
-        return $0
-    }(UILabel())
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

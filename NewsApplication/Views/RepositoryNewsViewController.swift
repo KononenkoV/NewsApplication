@@ -1,40 +1,47 @@
 import UIKit
 
-class RepositoryNewsViewController: UIViewController {
- 
+protocol RepositoryNewsViewControllerProtocol: AnyObject{
+    
+}
+
+class RepositoryNewsViewController: UIViewController, RepositoryNewsViewControllerProtocol  {
+    
+    var presenter: RepositoryNewsPresenterProtocol!
+
+    
     var mok: [NewsEntity] = NewsEntity.mockData()
         
-    // Переменная с результатами поиска
-    var searchedMok = [NewsEntity]()
-    var isSearching = false
-   
-    lazy var searchBar: UISearchBar = {
-        $0.delegate = self
-        $0.sizeToFit()
-        $0.searchBarStyle = .prominent
-        $0.placeholder = "Поиск по архиву"
-        $0.searchTextField.backgroundColor = .white.withAlphaComponent(0.5)
-        $0.tintColor = .black.withAlphaComponent(0.5)
-        return $0
-    }(UISearchBar())
-    
-    private lazy var tableView: UITableView = {
-        $0.dataSource = self
-        $0.delegate = self
-        $0.separatorStyle = .none
-        $0.register(NewsCell.self, forCellReuseIdentifier: NewsCell.reuseId)
-        $0.backgroundColor = .clear
-           return $0
-       }(UITableView(frame:view.frame, style: .plain))
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .appNewsArchiveBg
-        title = "Архив"
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.hidesBarsOnSwipe = true
-        navigationItem.titleView = searchBar
-        view.addSubviews(tableView)
+    //    Переменная с результатами поиска
+        var searchedMok = [NewsEntity]()
+        var isSearching = false
+       
+        lazy var searchBar: UISearchBar = {
+            $0.delegate = self
+            $0.sizeToFit()
+            $0.searchBarStyle = .prominent
+            $0.placeholder = "Поиск по архиву"
+            $0.searchTextField.backgroundColor = .white.withAlphaComponent(0.5)
+            $0.tintColor = .black.withAlphaComponent(0.5)
+            return $0
+        }(UISearchBar())
+        
+        private lazy var tableView: UITableView = {
+            $0.dataSource = self
+            $0.delegate = self
+            $0.separatorStyle = .none
+            $0.register(NewsCell.self, forCellReuseIdentifier: NewsCell.reuseId)
+            $0.backgroundColor = .clear
+               return $0
+           }(UITableView(frame:view.frame, style: .plain))
+        
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            view.backgroundColor = .appNewsArchiveBg
+            title = "Архив"
+            navigationController?.navigationBar.prefersLargeTitles = true
+            navigationController?.hidesBarsOnSwipe = true
+            navigationItem.titleView = searchBar
+            view.addSubviews(tableView)
 
         setupConstraints()
     }
