@@ -27,6 +27,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, SceneDelegateProtocol, 
         
         
         self.window = UIWindow(windowScene: sceneWindow)
+        
+//       !!! Вот сюда билдер тоже надо приделать  !!!
         self.window?.rootViewController = authVC
         self.window?.makeKeyAndVisible()
     }

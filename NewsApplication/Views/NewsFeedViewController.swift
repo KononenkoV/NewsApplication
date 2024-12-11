@@ -7,7 +7,13 @@
 
 import UIKit
 
-class NewsFeedViewController: UIViewController {
+protocol NewsFeedViewControllerProtocol: AnyObject{
+    
+}
+
+class NewsFeedViewController: UIViewController, NewsFeedViewControllerProtocol  {
+    
+    var presenter: NewsFeedViewPresenterProtocol!
     
     var mok: [NewsEntity] = [
             NewsEntity(thumbnail: "mokphoto1", title: "Oleg man spent $15,000 making a Tesla Cybertruck out of wood", date: "13.12.24", urlText: "https://mail.ru", descr: "The wooden Cybertruck replica includes LED lights and a X logo. ND - WoodArt A Vietnamese man built a fully functional replica of Tesla's Cybertruck out of wood. Truong Van Dao's been driving his family around in the car, which is being sent to Elon Musk, The wooden Cybertruck replica includes LED lights and a X logo. ND - WoodArt A Vietnamese man built a fully functional replica of Tesla's Cybertruck out of wood. Truong Van Dao's been driving his family around in the car, which is being sent to Elon Musk. The wooden Cybertruck replica includes LED lights and a X logo. ND - WoodArt A Vietnamese man built a fully functional replica of Tesla's Cybertruck out of wood. Truong Van Dao's been driving his family around in the car, which is being sent to Elon Musk "),
@@ -68,6 +74,7 @@ class NewsFeedViewController: UIViewController {
 //Расширение для таблицы
 extension NewsFeedViewController: UITableViewDataSource , UITableViewDelegate, UISearchBarDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        Количество ячеек в таблице в зависимости от того, идет ли поиск
         if isSearching {
              return searchedMok.count
          } else {
@@ -95,7 +102,7 @@ extension NewsFeedViewController: UITableViewDataSource , UITableViewDelegate, U
 //    При нажатии на ячейку таблицы переход в детальную новости
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = NewsDetailView()
-//        Задаю параметры содержимого для детальной новости
+//    Задаю параметры содержимого для детальной новости
         vc.imageSource = mok[indexPath.row].thumbnail
         vc.titleText = mok[indexPath.row].title
         vc.descrText = mok[indexPath.row].descr
