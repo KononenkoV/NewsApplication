@@ -7,8 +7,18 @@
 
 import UIKit
 
-class NewsDetailView: UIViewController {
+protocol NewsDetailViewControllerProtocol: AnyObject{
+    var imageSource: String {set get}
+    var titleText: String {set get}
+    var dateText: String {set get}
+    var descrText: String {set get}
+    var linkText: String {set get}
+}
+
+class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
     
+    var presenter: NewsDetailViewPresenterProtocol!
+
     var imageSource: String = ""
     var titleText: String = ""
     var dateText: String = ""

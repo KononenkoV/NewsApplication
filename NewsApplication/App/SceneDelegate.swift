@@ -22,8 +22,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, SceneDelegateProtocol, 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let sceneWindow = (scene as? UIWindowScene) else { return }
         
-        let authVC = AuthViewController()
-        authVC.delegate = self
+//        let authVC = AuthViewController()
+        let authVC = UIBuilder.createAuthView(delegate: self)
         
         
         self.window = UIWindow(windowScene: sceneWindow)

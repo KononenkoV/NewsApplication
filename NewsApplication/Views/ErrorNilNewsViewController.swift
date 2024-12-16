@@ -88,14 +88,10 @@ extension ErrorNilNewsViewController: UITableViewDataSource , UITableViewDelegat
         
     // При нажатии на ячейку таблицы переход в детальную новости
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = NewsDetailView()
+       
+        //Через билдер задается экран и его переменные
+        let vc = UIBuilder.createDetailView(imageSource: mok[indexPath.row].thumbnail, titleText: mok[indexPath.row].title, dateText: mok[indexPath.row].date, descrText: mok[indexPath.row].descr, linkText: mok[indexPath.row].urlText)
 
-        // Задаю параметры содержимого для детальной новости
-        vc.imageSource = mok[indexPath.row].thumbnail
-        vc.titleText = mok[indexPath.row].title
-        vc.descrText = mok[indexPath.row].descr
-        vc.dateText = mok[indexPath.row].date
-        vc.linkText = mok[indexPath.row].urlText
         
         navigationController?.pushViewController(vc, animated: true)
     }

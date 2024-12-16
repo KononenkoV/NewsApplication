@@ -18,7 +18,5 @@ class NewsFeedViewPresenter: NewsFeedViewPresenterProtocol {
     init(view: NewsFeedViewControllerProtocol?) {
         self.view = view
     }
-    
-    
 }
 

@@ -4,10 +4,16 @@
 //
 //  Created by Олег Дмитриев on 07.12.2024.
 //
-
 import UIKit
 
-class AuthViewController: UIViewController {
+protocol AuthViewControllerProtocol: AnyObject{
+    var delegate: SceneDelegateProtocol? {set get}
+}
+
+
+class AuthViewController: UIViewController, AuthViewControllerProtocol {
+    
+    var presenter: AuthViewPresenterProtocol!
     
     var delegate: SceneDelegateProtocol?
     
