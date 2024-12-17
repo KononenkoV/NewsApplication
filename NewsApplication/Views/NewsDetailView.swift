@@ -135,6 +135,7 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
         navigationController?.navigationBar.prefersLargeTitles = true
         
         view.addSubviews(scrollView)
+        
         setupConstraints()
     }
     

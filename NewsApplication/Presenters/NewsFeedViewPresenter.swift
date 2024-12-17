@@ -18,8 +18,8 @@ class NewsFeedViewPresenter: NewsFeedViewPresenterProtocol {
     
     private let newsNetworkManager = NewsNetworkManager()
     
-//    Теперь массив новостей тут хранится
-    var newsFeed: [Article] = Article.mockData()
+//  Теперь массив новостей тут хранится
+    var newsFeed: [Article] = []
 
     
     init(view: NewsFeedViewControllerProtocol?) {

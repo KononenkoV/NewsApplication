@@ -14,9 +14,9 @@ class NewsNetworkManager {
     
     func getNews(completion: @escaping ([Article]) -> Void){
         let parameters: Parameters = [
-            "q" : "russia",
+            "q" : "Peace",
             "apiKey" : "3adfa3683e36492db895391e230f2f96",
-            "language" : "ru",
+//            "language" : "ru",
             "pagesize" : "20"
         ]
         
@@ -34,7 +34,6 @@ class NewsNetworkManager {
             }
         }
     }
-
     }
 
 
