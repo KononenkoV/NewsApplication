@@ -10,10 +10,10 @@ class ErrorNilNewsViewController: UIViewController, ErrorNilNewsViewControllerPr
     var presenter: ErrorNilNewsPresenterProtocol!
  
         
-    var mok: [NewsEntity] = NewsEntity.mockData()
+    var mok: [Article] = Article.mockData()
         
     // Переменная с результатами поиска
-    var searchedMok = [NewsEntity]()
+    var searchedMok = [Article]()
     var isSearching = false
        
     lazy var searchBar: UISearchBar = {
@@ -90,7 +90,7 @@ extension ErrorNilNewsViewController: UITableViewDataSource , UITableViewDelegat
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
        
         //Через билдер задается экран и его переменные
-        let vc = UIBuilder.createDetailView(imageSource: mok[indexPath.row].thumbnail, titleText: mok[indexPath.row].title, dateText: mok[indexPath.row].date, descrText: mok[indexPath.row].descr, linkText: mok[indexPath.row].urlText)
+        let vc = UIBuilder.createDetailView(imageSource: mok[indexPath.row].urlToImage ?? "", titleText: mok[indexPath.row].title ?? "", dateText: mok[indexPath.row].publishedAt ?? "", descrText: mok[indexPath.row].content ?? "", linkText: mok[indexPath.row].url ?? "")
 
         
         navigationController?.pushViewController(vc, animated: true)
@@ -103,7 +103,7 @@ extension ErrorNilNewsViewController: UITableViewDataSource , UITableViewDelegat
             
         } else if searchText.count > 2 {
             searchedMok = mok.filter {
-                $0.title.lowercased().contains(searchText.lowercased())
+                $0.title!.lowercased().contains(searchText.lowercased())
             }
             isSearching = true
         }

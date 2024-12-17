@@ -8,17 +8,15 @@
 import UIKit
 
 protocol NewsFeedViewControllerProtocol: AnyObject{
-    
+    var tableView: UITableView {get set}
 }
 
 class NewsFeedViewController: UIViewController, NewsFeedViewControllerProtocol  {
     
     var presenter: NewsFeedViewPresenterProtocol!
-    
-    var mok: [NewsEntity] = NewsEntity.mockData()
-    
+
     // Переменная с результатами поиска
-    var searchedMok = [NewsEntity]()
+    var searchedMok = [Article]()
     var isSearching = false
    
     lazy var searchBar: UISearchBar = {
@@ -31,7 +29,7 @@ class NewsFeedViewController: UIViewController, NewsFeedViewControllerProtocol  
         return $0
     }(UISearchBar())
     
-    private lazy var tableView: UITableView = {
+     lazy var tableView: UITableView = {
         $0.dataSource = self
         $0.delegate = self
         $0.separatorStyle = .none
@@ -50,6 +48,9 @@ class NewsFeedViewController: UIViewController, NewsFeedViewControllerProtocol  
         view.addSubviews(tableView)
 
         setupConstraints()
+        
+//        Обращаюсь к пресентору чтобы соснул новостей
+        presenter.sendRequest()
     }
     
     private func setupConstraints() {
@@ -71,7 +72,7 @@ extension NewsFeedViewController: UITableViewDataSource , UITableViewDelegate, U
         if isSearching {
              return searchedMok.count
          } else {
-             return mok.count
+             return presenter.newsFeed.count
          }
     }
     
@@ -85,7 +86,7 @@ extension NewsFeedViewController: UITableViewDataSource , UITableViewDelegate, U
             cell.setupView(item: item)
             cell.selectionStyle = .none
         } else {
-            let item = mok[indexPath.row]
+            let item = presenter.newsFeed[indexPath.row]
             cell.setupView(item: item)
             cell.selectionStyle = .none
         }
@@ -96,9 +97,8 @@ extension NewsFeedViewController: UITableViewDataSource , UITableViewDelegate, U
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
        
         //Через билдер задается экран и его переменные
-        let vc = UIBuilder.createDetailView(imageSource: mok[indexPath.row].thumbnail, titleText: mok[indexPath.row].title, dateText: mok[indexPath.row].date, descrText: mok[indexPath.row].descr, linkText: mok[indexPath.row].urlText)
+        let vc = UIBuilder.createDetailView(imageSource: presenter.newsFeed[indexPath.row].urlToImage ?? "", titleText: presenter.newsFeed[indexPath.row].title ?? "", dateText: presenter.newsFeed[indexPath.row].publishedAt ?? "", descrText: presenter.newsFeed[indexPath.row].content ?? "", linkText: presenter.newsFeed[indexPath.row].url ?? "")
 
-        
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -108,8 +108,8 @@ extension NewsFeedViewController: UITableViewDataSource , UITableViewDelegate, U
             isSearching = false
             
         } else if searchText.count > 2 {
-            searchedMok = mok.filter {
-                $0.title.lowercased().contains(searchText.lowercased())
+            searchedMok = presenter.newsFeed.filter {
+                $0.title!.lowercased().contains(searchText.lowercased())
             }
             isSearching = true
         }

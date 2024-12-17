@@ -96,12 +96,12 @@ class NewsCell: UITableViewCell {
     }
 
     // Настройка ячейки
-    func setupView(item: NewsEntity){
-        newsImage.image = UIImage(named: item.thumbnail)
-        sourceText.text = item.urlText
-        dateText.text = item.date
+    func setupView(item: Article){
+        newsImage.image = UIImage(named: item.urlToImage ?? "")
+        sourceText.text = item.url
+        dateText.text = item.publishedAt
         titleText.text = item.title
-        newsText.text = item.descr
+        newsText.text = item.content
  
         setConstraints()
     }
