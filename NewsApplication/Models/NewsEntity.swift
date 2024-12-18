@@ -12,8 +12,8 @@ struct News: Codable {
 }
 
 struct Article: Codable {
-//    var id: UUID = UUID()
     let title: String?
+//  Ссылка будет использоваться как айди
     let urlToImage: String?
     let url: String?
     let publishedAt: String?

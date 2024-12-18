@@ -41,9 +41,20 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
     lazy var newsImage: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.heightAnchor.constraint(equalToConstant: 300).isActive = true
-        $0.image = UIImage(named: imageSource)
+        
+//        Проверка загрузка изображения
+        if imageSource != "" {
+            $0.load(url: URL(string: imageSource)!)
+            $0.contentMode = .scaleAspectFill
+
+        }
+        else {
+            $0.image = UIImage(systemName: "link")
+            $0.contentMode = .scaleAspectFit
+            $0.tintColor = .black
+        }
+
         $0.clipsToBounds = true
-        $0.contentMode = .scaleAspectFill
           
         // Градиент
         let gradientLayer = CAGradientLayer()
@@ -57,19 +68,25 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
 
 
       $0.layer.addSublayer(gradientLayer)
-            
             return $0
         }(UIImageView())
     
 //    Надпись источник
         lazy var sourceTextLabel: UILabel = {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.widthAnchor.constraint(equalToConstant: 150).isActive = true
-            $0.text = linkText
+            $0.widthAnchor.constraint(equalToConstant: 210).isActive = true
+         
+//            Обрезаю с ссылки только домен
+            if linkText != "Нет ссылки" {
+                if let url = URL(string: linkText) {
+                    let domain = url.host
+                    $0.text = domain?.description ?? "Нет ссылки"
+                }}
+            else {$0.text = "Нет ссылки"}
+            
             $0.numberOfLines = 1
             $0.textColor = .white
             $0.font = .montserrat(.mRegular, 14)
-//            $0.font = .systemFont(ofSize: 14, weight: .semibold)
             return $0
         }(UILabel())
         
@@ -77,7 +94,32 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
             lazy var dateTextLabel: UILabel = {
                 $0.translatesAutoresizingMaskIntoConstraints = false
                 $0.numberOfLines = 1
-                $0.text = dateText
+                $0.widthAnchor.constraint(equalToConstant: 120).isActive = true
+                $0.textAlignment = .right
+                
+                //        Конвертирую дату
+                        if dateText != "", dateText != "Нет даты" {
+                            let isoDate = dateText
+                            // Создаем ISO8601 DateFormatter для парсинга строки
+                            let isoDateFormatter = ISO8601DateFormatter()
+                            isoDateFormatter.formatOptions = [.withInternetDateTime]
+                            
+                            // Парсим строку в дату
+                            if let date = isoDateFormatter.date(from: isoDate) {
+                                // Создаем DateFormatter для преобразования в желаемый формат
+                                let outputFormatter = DateFormatter()
+                                outputFormatter.dateFormat = "dd.MM.yyyy"
+                                
+                                // Конвертируем дату в строку
+                                let formattedDate = outputFormatter.string(from: date)
+                                $0.text = formattedDate // Результат: "24.11.2024"
+                            } else {
+                                $0.text = "Нет даты"
+                            }}
+                        else {
+                            $0.text = "Нет даты"
+                        }
+                
                 $0.textColor = .white
                 $0.font = .montserrat(.mRegular, 14)
 //                $0.font = .systemFont(ofSize: 14, weight: .semibold)
@@ -154,10 +196,10 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
             newsImage.leadingAnchor.constraint(equalTo: scrollContent.leadingAnchor, constant: 0),
             
             sourceTextLabel.bottomAnchor.constraint(equalTo: newsImage.bottomAnchor, constant: -20),
-            sourceTextLabel.leadingAnchor.constraint(equalTo: newsImage.leadingAnchor, constant: 30),
+            sourceTextLabel.leadingAnchor.constraint(equalTo: newsImage.leadingAnchor, constant: 20),
             
             dateTextLabel.bottomAnchor.constraint(equalTo: newsImage.bottomAnchor, constant: -20),
-            dateTextLabel.trailingAnchor.constraint(equalTo: newsImage.trailingAnchor, constant: -30),
+            dateTextLabel.trailingAnchor.constraint(equalTo: newsImage.trailingAnchor, constant: -20),
 
             titleTextLabel.topAnchor.constraint(equalTo: newsImage.bottomAnchor, constant: 26),
             titleTextLabel.trailingAnchor.constraint(equalTo: scrollContent.trailingAnchor, constant: -20),
@@ -167,11 +209,11 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
             newsTextLabel.trailingAnchor.constraint(equalTo: scrollContent.trailingAnchor, constant: -20),
             newsTextLabel.leadingAnchor.constraint(equalTo: scrollContent.leadingAnchor, constant: 20),
             
-            goToSiteBtn.topAnchor.constraint(equalTo: newsTextLabel.bottomAnchor, constant: 30),
+            goToSiteBtn.topAnchor.constraint(equalTo: newsTextLabel.bottomAnchor, constant: 70),
             goToSiteBtn.trailingAnchor.constraint(equalTo: scrollContent.trailingAnchor, constant: -20),
             goToSiteBtn.leadingAnchor.constraint(equalTo: scrollContent.leadingAnchor, constant: 20),
             
-            scrollContent.bottomAnchor.constraint(equalTo: goToSiteBtn.bottomAnchor, constant: 30),
+            scrollContent.bottomAnchor.constraint(equalTo: goToSiteBtn.bottomAnchor, constant: 50),
             
             
         ])

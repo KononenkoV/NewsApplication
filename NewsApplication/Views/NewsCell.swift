@@ -19,7 +19,7 @@ class NewsCell: UITableViewCell {
         $0.heightAnchor.constraint(equalToConstant: 268).isActive = true
         $0.layer.cornerRadius = 20
         $0.clipsToBounds = true
-        $0.contentMode = .scaleAspectFill
+
         return $0
     }(UIImageView())
     
@@ -43,7 +43,7 @@ class NewsCell: UITableViewCell {
     // Надпись источник
     lazy var sourceText: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        $0.widthAnchor.constraint(equalToConstant: 210).isActive = true
         $0.numberOfLines = 1
         $0.textColor = .black
 //        $0.font = .systemFont(ofSize: 14, weight: .semibold)
@@ -55,6 +55,8 @@ class NewsCell: UITableViewCell {
 //    Надпись дата
         lazy var dateText: UILabel = {
             $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.widthAnchor.constraint(equalToConstant: 120).isActive = true
+            $0.textAlignment = .right
             $0.numberOfLines = 1
             $0.textColor = .appGrayText
 //            $0.font = .systemFont(ofSize: 14, weight: .semibold)
@@ -97,11 +99,48 @@ class NewsCell: UITableViewCell {
 
     // Настройка ячейки
     func setupView(item: Article){
-        newsImage.image = UIImage(named: item.urlToImage ?? "")
-        sourceText.text = item.url
-        dateText.text = item.publishedAt
-        titleText.text = item.title
-        newsText.text = item.content
+//        Загружаю изображение или пустышку
+        if let imageUrl = item.urlToImage {
+            newsImage.load(url: URL(string: imageUrl)!)
+            newsImage.contentMode = .scaleAspectFill
+        } else {newsImage.image = UIImage(systemName: "link")
+            newsImage.contentMode = .scaleAspectFit
+            newsImage.tintColor = .black
+        }
+        
+//      Проверяю ссылку, обзераю домен
+        if let url = URL(string: item.url!) {
+           let domain = url.host
+            sourceText.text = domain?.description ?? "Нет ссылки"
+            }
+        else {sourceText.text = "Нет ссылки"}
+        
+//        Конвертирую дату
+        if let isoDate = item.publishedAt {
+// Создаем ISO8601 DateFormatter для парсинга строки
+            let isoDateFormatter = ISO8601DateFormatter()
+            isoDateFormatter.formatOptions = [.withInternetDateTime]
+            
+            // Парсим строку в дату
+            if let date = isoDateFormatter.date(from: isoDate) {
+                // Создаем DateFormatter для преобразования в желаемый формат
+                let outputFormatter = DateFormatter()
+                outputFormatter.dateFormat = "dd.MM.yyyy"
+                
+                // Конвертируем дату в строку
+                let formattedDate = outputFormatter.string(from: date)
+                dateText.text = formattedDate // Результат: "24.11.2024"
+            } else {
+                dateText.text = "Нет даты"
+            }}
+        else {
+            dateText.text = "Нет даты"
+        }
+        
+        
+        
+        titleText.text = item.title ?? "Нет названия"
+        newsText.text = item.content ?? "Нет статьи"
  
         setConstraints()
     }

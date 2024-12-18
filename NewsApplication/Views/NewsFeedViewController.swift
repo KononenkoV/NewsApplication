@@ -45,6 +45,7 @@ class NewsFeedViewController: UIViewController, NewsFeedViewControllerProtocol  
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.hidesBarsOnSwipe = true
         navigationItem.titleView = searchBar
+        
         view.addSubviews(tableView)
 
         setupConstraints()
@@ -97,9 +98,9 @@ extension NewsFeedViewController: UITableViewDataSource , UITableViewDelegate, U
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
        
         //Через билдер задается экран и его переменные
-        let vc = UIBuilder.createDetailView(imageSource: presenter.newsFeed[indexPath.row].urlToImage ?? "mokphoto1", titleText: presenter.newsFeed[indexPath.row].title ?? "Нет заголовка", dateText: presenter.newsFeed[indexPath.row].publishedAt ?? "Дата неизвестна", descrText: presenter.newsFeed[indexPath.row].content ?? "Нет детального текста", linkText: presenter.newsFeed[indexPath.row].url ?? "Нет ссылки")
+        let vc = UIBuilder.createDetailView(imageSource: presenter.newsFeed[indexPath.row].urlToImage ?? "", titleText: presenter.newsFeed[indexPath.row].title ?? "Нет заголовка", dateText: presenter.newsFeed[indexPath.row].publishedAt ?? "Дата неизвестна", descrText: presenter.newsFeed[indexPath.row].content ?? "Нет детального текста", linkText: presenter.newsFeed[indexPath.row].url ?? "Нет ссылки")
 
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: false)
     }
     
     // Поиск ищет только по заголовку поле title
