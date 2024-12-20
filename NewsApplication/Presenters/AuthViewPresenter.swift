@@ -13,12 +13,12 @@ protocol AuthViewPresenterProtocol: AnyObject {
 }
 
 class AuthViewPresenter: AuthViewPresenterProtocol {
-    weak var view: AuthViewControllerProtocol?
-    
-    init(view: AuthViewControllerProtocol?, delegate: SceneDelegateProtocol?) {
-        self.view = view
-        self.view?.delegate = delegate
-    }
+//    weak var view: AuthViewControllerProtocol?
+//    
+//    init(view: AuthViewControllerProtocol?, delegate: SceneDelegateProtocol?) {
+//        self.view = view
+//        self.view?.delegate = delegate
+//    }
     
     
 }
