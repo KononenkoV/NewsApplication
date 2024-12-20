@@ -37,10 +37,11 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
         return $0
     }(UIView())
     
+    
     // Титульная картинка новостей
     lazy var newsImage: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.heightAnchor.constraint(equalToConstant: 300).isActive = true
+//        $0.heightAnchor.constraint(equalToConstant: 300).isActive = true
         
 //        Проверка загрузка изображения
         if imageSource != "" {
@@ -58,15 +59,11 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
           
         // Градиент
         let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [
-            UIColor.clear.cgColor,
-            UIColor.black.withAlphaComponent(0.8).cgColor,
-        ]
-       gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.6) // Снизу
-       gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)   // Сверху
-       gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 300)
-
-
+        gradientLayer.colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.8).cgColor]
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.6)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 300)
+        
       $0.layer.addSublayer(gradientLayer)
             return $0
         }(UIImageView())
@@ -181,43 +178,44 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
         setupConstraints()
     }
     
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             
-            scrollContent.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0),
-            scrollContent.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0),
-            scrollContent.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0),
-            scrollContent.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0),
-            
+            // Привязка scrollContent к scrollView
+            scrollContent.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            scrollContent.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            scrollContent.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            scrollContent.bottomAnchor.constraint(equalTo: newsTextLabel.bottomAnchor, constant: 20), // Нижняя граница контента
+
             scrollContent.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            
-            newsImage.topAnchor.constraint(equalTo: scrollContent.topAnchor, constant: 0),
-            newsImage.trailingAnchor.constraint(equalTo: scrollContent.trailingAnchor, constant: 0),
-            newsImage.leadingAnchor.constraint(equalTo: scrollContent.leadingAnchor, constant: 0),
-            
+
+            // Привязки для элементов внутри scrollContent
+            newsImage.topAnchor.constraint(equalTo: scrollContent.topAnchor),
+            newsImage.leadingAnchor.constraint(equalTo: scrollContent.leadingAnchor),
+            newsImage.trailingAnchor.constraint(equalTo: scrollContent.trailingAnchor),
+            newsImage.heightAnchor.constraint(equalTo: scrollContent.widthAnchor, multiplier: newsImage.image?.getRatio() ?? 0.5),
+
             sourceTextLabel.bottomAnchor.constraint(equalTo: newsImage.bottomAnchor, constant: -20),
             sourceTextLabel.leadingAnchor.constraint(equalTo: newsImage.leadingAnchor, constant: 20),
-            
+
             dateTextLabel.bottomAnchor.constraint(equalTo: newsImage.bottomAnchor, constant: -20),
             dateTextLabel.trailingAnchor.constraint(equalTo: newsImage.trailingAnchor, constant: -20),
 
             titleTextLabel.topAnchor.constraint(equalTo: newsImage.bottomAnchor, constant: 26),
-            titleTextLabel.trailingAnchor.constraint(equalTo: scrollContent.trailingAnchor, constant: -20),
             titleTextLabel.leadingAnchor.constraint(equalTo: scrollContent.leadingAnchor, constant: 20),
-            
+            titleTextLabel.trailingAnchor.constraint(equalTo: scrollContent.trailingAnchor, constant: -20),
+
             newsTextLabel.topAnchor.constraint(equalTo: titleTextLabel.bottomAnchor, constant: 26),
-            newsTextLabel.trailingAnchor.constraint(equalTo: scrollContent.trailingAnchor, constant: -20),
             newsTextLabel.leadingAnchor.constraint(equalTo: scrollContent.leadingAnchor, constant: 20),
-            
-            goToSiteBtn.topAnchor.constraint(equalTo: newsTextLabel.bottomAnchor, constant: 70),
-            goToSiteBtn.trailingAnchor.constraint(equalTo: scrollContent.trailingAnchor, constant: -20),
-            goToSiteBtn.leadingAnchor.constraint(equalTo: scrollContent.leadingAnchor, constant: 20),
-            
-            scrollContent.bottomAnchor.constraint(equalTo: goToSiteBtn.bottomAnchor, constant: 50),
-            
-            
+            newsTextLabel.trailingAnchor.constraint(equalTo: scrollContent.trailingAnchor, constant: -20),
+
+            // Привязка кнопки goToSiteBtn к нижней части экрана
+            goToSiteBtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            goToSiteBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            goToSiteBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            goToSiteBtn.heightAnchor.constraint(equalToConstant: 58)
         ])
     }
 }
-
 

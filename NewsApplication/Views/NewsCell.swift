@@ -5,7 +5,7 @@ class NewsCell: UITableViewCell {
     static let reuseId = "NewsCell"
     lazy var isPressedHeart: Bool = false
     
-    // Вью подложка
+// Вью подложка
     lazy var backView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.layer.cornerRadius = 20
@@ -13,17 +13,16 @@ class NewsCell: UITableViewCell {
         return $0
     }(UIView())
     
-    // Титульная картинка новостей
+// Титульная картинка новостей
     lazy var newsImage: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.heightAnchor.constraint(equalToConstant: 268).isActive = true
         $0.layer.cornerRadius = 20
         $0.clipsToBounds = true
 
         return $0
     }(UIImageView())
     
-    // Звездочка избранного
+// Звездочка избранного
     lazy var starBtn: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.heightAnchor.constraint(equalToConstant: 21).isActive = true
@@ -34,19 +33,18 @@ class NewsCell: UITableViewCell {
     }(UIButton(primaryAction: starBtnAction))
     
     
-    // Экшен звездочки избранного
+// Экшен звездочки избранного
     lazy var starBtnAction: UIAction = UIAction { [weak self] _ in
         self?.isPressedHeart.toggle()
         self?.starBtn.setImage(self!.isPressedHeart ? .starFilled : .star,  for: .normal)
           }
     
-    // Надпись источник
+// Надпись источник
     lazy var sourceText: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.widthAnchor.constraint(equalToConstant: 210).isActive = true
         $0.numberOfLines = 1
         $0.textColor = .black
-//        $0.font = .systemFont(ofSize: 14, weight: .semibold)
         $0.font = .montserrat(.mRegular, 14)
         return $0
     }(UILabel())
@@ -59,7 +57,6 @@ class NewsCell: UITableViewCell {
             $0.textAlignment = .right
             $0.numberOfLines = 1
             $0.textColor = .appGrayText
-//            $0.font = .systemFont(ofSize: 14, weight: .semibold)
             $0.font = .montserrat(.mRegular, 14)
             return $0
         }(UILabel())
@@ -69,7 +66,6 @@ class NewsCell: UITableViewCell {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.numberOfLines = 0
             $0.textColor = .black
-//            $0.font = .systemFont(ofSize: 20, weight: .black)
             $0.font = .montserrat(.mBold, 20)
             return $0
         }(UILabel())
@@ -97,8 +93,9 @@ class NewsCell: UITableViewCell {
         backView.addSubview(newsText)
     }
 
-    // Настройка ячейки
+// Настройка ячейки
     func setupView(item: Article){
+
 //        Загружаю изображение или пустышку
         if let imageUrl = item.urlToImage {
             newsImage.load(url: URL(string: imageUrl)!)
@@ -121,7 +118,7 @@ class NewsCell: UITableViewCell {
             let isoDateFormatter = ISO8601DateFormatter()
             isoDateFormatter.formatOptions = [.withInternetDateTime]
             
-            // Парсим строку в дату
+// Парсим строку в дату
             if let date = isoDateFormatter.date(from: isoDate) {
                 // Создаем DateFormatter для преобразования в желаемый формат
                 let outputFormatter = DateFormatter()
@@ -136,8 +133,6 @@ class NewsCell: UITableViewCell {
         else {
             dateText.text = "Нет даты"
         }
-        
-        
         
         titleText.text = item.title ?? "Нет названия"
         newsText.text = item.content ?? "Нет статьи"
@@ -156,6 +151,7 @@ class NewsCell: UITableViewCell {
             newsImage.topAnchor.constraint(equalTo: backView.topAnchor, constant: 0),
             newsImage.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 0),
             newsImage.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: 0),
+            newsImage.heightAnchor.constraint(equalTo: backView.widthAnchor, multiplier: newsImage.image?.getRatio() ?? 0.7),
             
             starBtn.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -20),
             starBtn.topAnchor.constraint(equalTo: backView.topAnchor, constant: 20),
@@ -175,7 +171,6 @@ class NewsCell: UITableViewCell {
             newsText.topAnchor.constraint(equalTo: titleText.bottomAnchor, constant: 10),
             
            backView.bottomAnchor.constraint(equalTo: newsText.bottomAnchor, constant: 20)
-
         ])
     }
         

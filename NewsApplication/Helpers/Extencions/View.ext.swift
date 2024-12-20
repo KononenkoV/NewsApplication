@@ -13,7 +13,6 @@ extension UIView {
     }
 }
 
-
 //Загрузка одного изображения
 extension UIImageView {
     func load(url: URL) {
@@ -31,5 +30,13 @@ extension UIImageView {
                 }
             }
         }
+    }
+}
+
+
+//Вычисление пропорций изображения
+extension UIImage {
+    func getRatio() -> CGFloat {
+        return self.size.height / self.size.width
     }
 }
