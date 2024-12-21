@@ -1,10 +1,3 @@
-//
-//  NewsDetailView.swift
-//  NewsApplication
-//
-//  Created by Вадим Кононенко on 08.12.2024.
-//
-
 import UIKit
 
 protocol NewsDetailViewControllerProtocol: AnyObject{
@@ -36,37 +29,40 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
         $0.addSubviews(newsImage, sourceTextLabel, dateTextLabel, dateTextLabel, titleTextLabel, newsTextLabel, goToSiteBtn)
         return $0
     }(UIView())
-    
-    
-    // Титульная картинка новостей
+  
+//    Изображение для новости с градиентом
     lazy var newsImage: UIImageView = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-//        $0.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.clipsToBounds = true
         
-//        Проверка загрузка изображения
-        if imageSource != "" {
-            $0.load(url: URL(string: imageSource)!)
-            $0.contentMode = .scaleAspectFill
-
+        if let url = URL(string: imageSource), !imageSource.isEmpty {
+            imageView.load(url: url) { [weak self] in
+                guard let self = self, let loadedImage = imageView.image else { return }
+                
+                // Обновляем констрейнты высоты после загрузки изображения
+                NSLayoutConstraint.deactivate(imageView.constraints)
+                NSLayoutConstraint.activate([
+                    imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: loadedImage.getRatio())
+                ])
+                self.view.layoutIfNeeded()
+            }
+            imageView.contentMode = .scaleAspectFill
+        } else {
+            imageView.image = UIImage(systemName: "link")
+            imageView.contentMode = .scaleAspectFit
+            imageView.tintColor = .black
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 1).isActive = true
         }
-        else {
-            $0.image = UIImage(systemName: "link")
-            $0.contentMode = .scaleAspectFit
-            $0.tintColor = .black
-        }
-
-        $0.clipsToBounds = true
-          
-        // Градиент
+        // Градиентный слой
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.8).cgColor]
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.6)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
-        gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 300)
-        
-      $0.layer.addSublayer(gradientLayer)
-            return $0
-        }(UIImageView())
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        imageView.layer.addSublayer(gradientLayer)
+        return imageView
+    }()
     
 //    Надпись источник
         lazy var sourceTextLabel: UILabel = {
@@ -194,7 +190,6 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
             newsImage.topAnchor.constraint(equalTo: scrollContent.topAnchor),
             newsImage.leadingAnchor.constraint(equalTo: scrollContent.leadingAnchor),
             newsImage.trailingAnchor.constraint(equalTo: scrollContent.trailingAnchor),
-            newsImage.heightAnchor.constraint(equalTo: scrollContent.widthAnchor, multiplier: newsImage.image?.getRatio() ?? 0.5),
 
             sourceTextLabel.bottomAnchor.constraint(equalTo: newsImage.bottomAnchor, constant: -20),
             sourceTextLabel.leadingAnchor.constraint(equalTo: newsImage.leadingAnchor, constant: 20),
@@ -218,4 +213,5 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
         ])
     }
 }
+
 

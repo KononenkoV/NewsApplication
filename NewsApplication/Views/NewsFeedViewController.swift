@@ -1,10 +1,3 @@
-//
-//  NewsFeedViewController.swift
-//  NewsApplication
-//
-//  Created by Олег Дмитриев on 07.12.2024.
-//
-
 import UIKit
 
 protocol NewsFeedViewControllerProtocol: AnyObject{
@@ -35,7 +28,7 @@ class NewsFeedViewController: UIViewController, NewsFeedViewControllerProtocol  
         $0.separatorStyle = .none
         $0.register(NewsCell.self, forCellReuseIdentifier: NewsCell.reuseId)
         $0.backgroundColor = .clear
-           return $0
+        return $0
        }(UITableView(frame:view.frame, style: .plain))
     
     override func viewDidLoad() {
@@ -47,11 +40,11 @@ class NewsFeedViewController: UIViewController, NewsFeedViewControllerProtocol  
         navigationItem.titleView = searchBar
         
         view.addSubviews(tableView)
-
-        setupConstraints()
         
 //      Обращаюсь к пресентору чтобы соснул новостей
         presenter.sendRequest()
+        setupConstraints()
+        
     }
     
     private func setupConstraints() {
@@ -80,7 +73,6 @@ extension NewsFeedViewController: UITableViewDataSource , UITableViewDelegate, U
     // Конфигурация ячейки
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: NewsCell.reuseId, for: indexPath) as! NewsCell
-
         // Меняем содержимое таблицы если идет поиск
         if isSearching {
             let item = searchedMok[indexPath.row]
@@ -89,7 +81,14 @@ extension NewsFeedViewController: UITableViewDataSource , UITableViewDelegate, U
         } else {
             let item = presenter.newsFeed[indexPath.row]
             cell.setupView(item: item)
-            cell.selectionStyle = .none
+            
+            cell.dataLoaded = { [weak self] in
+                guard let self = self, !cell.hasUpdated else { return }
+                DispatchQueue.main.async {
+                    self.tableView.reloadRows(at: [indexPath], with: .none)
+                }
+            }
+                cell.selectionStyle = .none
         }
         return cell
     }

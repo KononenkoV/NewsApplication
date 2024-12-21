@@ -14,10 +14,10 @@ class NewsNetworkManager {
     
     func getNews(completion: @escaping ([Article]) -> Void){
         let parameters: Parameters = [
-            "q" : "Russia",
+            "q" : "Love",
             "apiKey" : "3adfa3683e36492db895391e230f2f96",
 //            "language" : "ru",
-            "pagesize" : "20"
+            "pagesize" : "40"
         ]
         
         AF.request(url, method: .get, parameters: parameters).response { result in

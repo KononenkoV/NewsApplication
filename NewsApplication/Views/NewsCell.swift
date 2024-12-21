@@ -4,6 +4,9 @@ class NewsCell: UITableViewCell {
 
     static let reuseId = "NewsCell"
     lazy var isPressedHeart: Bool = false
+
+    var dataLoaded: (() -> Void)? // Замыкание для уведомления о завершении загрузки
+    var hasUpdated = false
     
 // Вью подложка
     lazy var backView: UIView = {
@@ -16,6 +19,7 @@ class NewsCell: UITableViewCell {
 // Титульная картинка новостей
     lazy var newsImage: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.heightAnchor.constraint(equalToConstant: 50).isActive = true
         $0.layer.cornerRadius = 20
         $0.clipsToBounds = true
 
@@ -49,7 +53,6 @@ class NewsCell: UITableViewCell {
         return $0
     }(UILabel())
     
-
 //    Надпись дата
         lazy var dateText: UILabel = {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -92,53 +95,63 @@ class NewsCell: UITableViewCell {
         backView.addSubview(titleText)
         backView.addSubview(newsText)
     }
+    
 
+    
 // Настройка ячейки
-    func setupView(item: Article){
+    func setupView(item: Article) {
+            // Загрузка изображения и обновление пропорций
+            if let imageUrl = item.urlToImage, let url = URL(string: imageUrl) {
+                newsImage.load(url: url) { [weak self] in
+                    guard let self = self, let loadedImage = self.newsImage.image else { return }
+                    let ratio = loadedImage.getRatio()
+                    // Обновляем высоту изображения, пропорционально ширине контейнера
+                    self.newsImage.heightAnchor.constraint(equalTo: self.backView.widthAnchor, multiplier: ratio).isActive = true
+                    // Обновляем layout, чтобы остальные элементы корректно подстроились
+                    self.layoutIfNeeded()
+                    
+                    // Вызываем замыкание, чтобы уведомить о завершении загрузки
+                    self.dataLoaded?()
+                    self.hasUpdated = true
+                }
+                newsImage.contentMode = .scaleAspectFill
+            } else {
+                // Если изображения нет, устанавливаем стандартное изображение
+                newsImage.image = UIImage(systemName: "link")
+                newsImage.contentMode = .scaleAspectFit
+                newsImage.tintColor = .black
 
-//        Загружаю изображение или пустышку
-        if let imageUrl = item.urlToImage {
-            newsImage.load(url: URL(string: imageUrl)!)
-            newsImage.contentMode = .scaleAspectFill
-        } else {newsImage.image = UIImage(systemName: "link")
-            newsImage.contentMode = .scaleAspectFit
-            newsImage.tintColor = .black
-        }
-        
-//      Проверяю ссылку, обзераю домен
-        if let url = URL(string: item.url!) {
-           let domain = url.host
-            sourceText.text = domain?.description ?? "Нет ссылки"
             }
-        else {sourceText.text = "Нет ссылки"}
-        
-//        Конвертирую дату
-        if let isoDate = item.publishedAt {
-// Создаем ISO8601 DateFormatter для парсинга строки
-            let isoDateFormatter = ISO8601DateFormatter()
-            isoDateFormatter.formatOptions = [.withInternetDateTime]
-            
-// Парсим строку в дату
-            if let date = isoDateFormatter.date(from: isoDate) {
-                // Создаем DateFormatter для преобразования в желаемый формат
-                let outputFormatter = DateFormatter()
-                outputFormatter.dateFormat = "dd.MM.yyyy"
+
+            // Преобразую ссылку
+            if let url = URL(string: item.url!) {
+                let domain = url.host
+                sourceText.text = domain?.description ?? "Нет ссылки"
+            } else {
+                sourceText.text = "Нет ссылки"
+            }
+
+            if let isoDate = item.publishedAt {
+                let isoDateFormatter = ISO8601DateFormatter()
+                isoDateFormatter.formatOptions = [.withInternetDateTime]
                 
-                // Конвертируем дату в строку
-                let formattedDate = outputFormatter.string(from: date)
-                dateText.text = formattedDate // Результат: "24.11.2024"
+                if let date = isoDateFormatter.date(from: isoDate) {
+                    let outputFormatter = DateFormatter()
+                    outputFormatter.dateFormat = "dd.MM.yyyy"
+                    let formattedDate = outputFormatter.string(from: date)
+                    dateText.text = formattedDate
+                } else {
+                    dateText.text = "Нет даты"
+                }
             } else {
                 dateText.text = "Нет даты"
-            }}
-        else {
-            dateText.text = "Нет даты"
+            }
+
+            titleText.text = item.title ?? "Нет названия"
+            newsText.text = item.content ?? "Нет статьи"
+            
+            setConstraints()
         }
-        
-        titleText.text = item.title ?? "Нет названия"
-        newsText.text = item.content ?? "Нет статьи"
- 
-        setConstraints()
-    }
     
     private func setConstraints(){
         NSLayoutConstraint.activate([
@@ -151,7 +164,7 @@ class NewsCell: UITableViewCell {
             newsImage.topAnchor.constraint(equalTo: backView.topAnchor, constant: 0),
             newsImage.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 0),
             newsImage.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: 0),
-            newsImage.heightAnchor.constraint(equalTo: backView.widthAnchor, multiplier: newsImage.image?.getRatio() ?? 0.7),
+            newsImage.heightAnchor.constraint(equalTo: backView.widthAnchor, multiplier: newsImage.image?.getRatio() ?? 1),
             
             starBtn.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -20),
             starBtn.topAnchor.constraint(equalTo: backView.topAnchor, constant: 20),
@@ -176,5 +189,32 @@ class NewsCell: UITableViewCell {
         
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+
+//Загрузка одного изображения
+extension UIImageView {
+    func load(url: URL, completion: (() -> Void)? = nil) {
+        DispatchQueue.global(qos: .utility).async { [weak self] in
+            if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    self?.image = image
+                    completion?() // Вызов колбэка после загрузки
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self?.image = UIImage(systemName: "externaldrive.trianglebadge.exclamationmark")
+                    completion?() // Все равно вызываем completion
+                }
+            }
+        }
+    }
+}
+
+//Вычисление пропорций изображения
+extension UIImage {
+    func getRatio() -> CGFloat {
+        return self.size.height / self.size.width
     }
 }
