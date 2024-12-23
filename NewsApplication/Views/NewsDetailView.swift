@@ -19,10 +19,13 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
     var linkText: String = ""
     
     lazy var scrollView: UIScrollView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = .clear
         $0.addSubview(scrollContent)
+//        $0.alwaysBounceVertical = true
+        $0.contentInsetAdjustmentBehavior = .never
         return $0
-    }(UIScrollView(frame: view.frame))
+    }(UIScrollView(frame: .zero))
     
     lazy var scrollContent: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -178,6 +181,12 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor), // Нижняя граница контента
+            scrollView.widthAnchor.constraint(equalTo: view.widthAnchor),
+
             // Привязка scrollContent к scrollView
             scrollContent.topAnchor.constraint(equalTo: scrollView.topAnchor),
             scrollContent.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
