@@ -22,14 +22,13 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = .clear
         $0.addSubview(scrollContent)
-//        $0.alwaysBounceVertical = true
         $0.contentInsetAdjustmentBehavior = .never
         return $0
     }(UIScrollView(frame: .zero))
     
     lazy var scrollContent: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.addSubviews(newsImage, sourceTextLabel, dateTextLabel, dateTextLabel, titleTextLabel, newsTextLabel, goToSiteBtn)
+        $0.addSubviews(newsImage, sourceTextLabel, dateTextLabel, dateTextLabel, titleTextLabel, newsTextLabel)
         return $0
     }(UIView())
   
@@ -42,12 +41,12 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
         if let url = URL(string: imageSource), !imageSource.isEmpty {
             imageView.load(url: url) { [weak self] in
                 guard let self = self, let loadedImage = imageView.image else { return }
-                
                 // Обновляем констрейнты высоты после загрузки изображения
-                NSLayoutConstraint.deactivate(imageView.constraints)
+//                NSLayoutConstraint.deactivate(imageView.constraints)  Здесь работает и без этой строки
                 NSLayoutConstraint.activate([
                     imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: loadedImage.getRatio())
                 ])
+//                Обновление экрана
                 self.view.layoutIfNeeded()
             }
             imageView.contentMode = .scaleAspectFill
@@ -115,10 +114,8 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
                         else {
                             $0.text = "Нет даты"
                         }
-                
                 $0.textColor = .white
                 $0.font = .montserrat(.mRegular, 14)
-//                $0.font = .systemFont(ofSize: 14, weight: .semibold)
                 return $0
             }(UILabel())
         
@@ -129,7 +126,6 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
                 $0.text = titleText
                 $0.textColor = .black
                 $0.font = .montserrat(.mBold, 20)
-//                $0.font = .systemFont(ofSize: 20, weight: .black)
                 return $0
             }(UILabel())
         
@@ -140,11 +136,9 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
                 $0.text = descrText
                 $0.textColor = .black
                 $0.font = .montserrat(.mRegular, 16)
-//                $0.font = .systemFont(ofSize: 16, weight: .light)
                 return $0
             }(UILabel())
 
-    
     // Кнопка перейти на источник
     lazy var goToSiteBtn: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -165,18 +159,16 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         title = "Новость"
         navigationController?.navigationBar.prefersLargeTitles = true
         
-        view.addSubviews(scrollView)
-        
+//        Кнопку добавляю на основной вью
+        view.addSubviews(scrollView, goToSiteBtn)
         setupConstraints()
     }
-    
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
@@ -214,7 +206,7 @@ class NewsDetailView: UIViewController, NewsDetailViewControllerProtocol  {
             newsTextLabel.leadingAnchor.constraint(equalTo: scrollContent.leadingAnchor, constant: 20),
             newsTextLabel.trailingAnchor.constraint(equalTo: scrollContent.trailingAnchor, constant: -20),
 
-            // Привязка кнопки goToSiteBtn к нижней части экрана
+            // Привязка кнопки goToSiteBtn к нижней части экрана. Обрати внимание куда она привязана
             goToSiteBtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             goToSiteBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             goToSiteBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),

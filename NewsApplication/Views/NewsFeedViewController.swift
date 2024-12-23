@@ -9,7 +9,7 @@ class NewsFeedViewController: UIViewController, NewsFeedViewControllerProtocol  
     var presenter: NewsFeedViewPresenterProtocol!
 
     // Переменная с результатами поиска
-    var searchedMok = [Article]()
+    var searchedMok: [Article] = []
     var isSearching = false
    
     lazy var searchBar: UISearchBar = {
@@ -44,7 +44,6 @@ class NewsFeedViewController: UIViewController, NewsFeedViewControllerProtocol  
 //      Обращаюсь к пресентору чтобы соснул новостей
         presenter.sendRequest()
         setupConstraints()
-        
     }
     
     private func setupConstraints() {
@@ -81,32 +80,27 @@ extension NewsFeedViewController: UITableViewDataSource , UITableViewDelegate, U
         } else {
             let item = presenter.newsFeed[indexPath.row]
             cell.setupView(item: item)
-            
-            cell.dataLoaded = { [weak self] in
-                guard let self = self, !cell.hasUpdated else { return }
-                DispatchQueue.main.async {
-                    self.tableView.reloadRows(at: [indexPath], with: .none)
-                }
-            }
-                cell.selectionStyle = .none
+            cell.selectionStyle = .none
         }
         return cell
     }
     
     // При нажатии на ячейку таблицы переход в детальную новости
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-       
-        //Через билдер задается экран и его переменные
-        let vc = UIBuilder.createDetailView(imageSource: presenter.newsFeed[indexPath.row].urlToImage ?? "", titleText: presenter.newsFeed[indexPath.row].title ?? "Нет заголовка", dateText: presenter.newsFeed[indexPath.row].publishedAt ?? "Дата неизвестна", descrText: presenter.newsFeed[indexPath.row].content ?? "Нет детального текста", linkText: presenter.newsFeed[indexPath.row].url ?? "Нет ссылки")
-
-        navigationController?.pushViewController(vc, animated: false)
-    }
-    
+        if !isSearching {
+            //Через билдер задается экран и его переменные
+            let vc = UIBuilder.createDetailView(imageSource: presenter.newsFeed[indexPath.row].urlToImage ?? "", titleText: presenter.newsFeed[indexPath.row].title ?? "Нет заголовка", dateText: presenter.newsFeed[indexPath.row].publishedAt ?? "Дата неизвестна", descrText: presenter.newsFeed[indexPath.row].content ?? "Нет детального текста", linkText: presenter.newsFeed[indexPath.row].url ?? "Нет ссылки")
+            navigationController?.pushViewController(vc, animated: false)}
+        
+        else if isSearching {
+            let vc = UIBuilder.createDetailView(imageSource: searchedMok[indexPath.row].urlToImage ?? "", titleText: searchedMok[indexPath.row].title ?? "Нет заголовка", dateText: searchedMok[indexPath.row].publishedAt ?? "Дата неизвестна", descrText: searchedMok[indexPath.row].content ?? "Нет детального текста", linkText: presenter.newsFeed[indexPath.row].url ?? "Нет ссылки")
+            navigationController?.pushViewController(vc, animated: false)}
+        }
+        
     // Поиск ищет только по заголовку поле title
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
             isSearching = false
-            
         } else if searchText.count > 2 {
             searchedMok = presenter.newsFeed.filter {
                 $0.title!.lowercased().contains(searchText.lowercased())

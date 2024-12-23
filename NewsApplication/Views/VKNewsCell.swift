@@ -1,8 +1,15 @@
+//
+//  VKNewsCell.swift
+//  NewsApplication
+//
+//  Created by Вадим Кононенко on 23.12.2024.
+//
+
 import UIKit
 
-class NewsCell: UITableViewCell {
+class VKNewsCell: UITableViewCell {
 
-    static let reuseId = "NewsCell"
+    static let reuseId = "VKNewsCell"
     lazy var isPressedHeart: Bool = false
 
     
@@ -87,7 +94,7 @@ class NewsCell: UITableViewCell {
     }
     
 // Настройка ячейки
-    func setupView(item: Article) {
+    func setupView(item: NewsArticle) {
             // Загрузка изображения
             if let imageUrl = item.urlToImage, let url = URL(string: imageUrl) {
                 newsImage.load(url: url)
@@ -100,14 +107,15 @@ class NewsCell: UITableViewCell {
             }
 
             // Преобразую ссылку
-            if let url = URL(string: item.url!) {
+            if let url = URL(string: item.url) {
                 let domain = url.host
                 sourceText.text = domain?.description ?? "Нет ссылки"
             } else {
                 sourceText.text = "Нет ссылки"
             }
 
-            if let isoDate = item.publishedAt {
+        
+             let isoDate = item.publishedAt
                 let isoDateFormatter = ISO8601DateFormatter()
                 isoDateFormatter.formatOptions = [.withInternetDateTime]
                 
@@ -119,12 +127,9 @@ class NewsCell: UITableViewCell {
                 } else {
                     dateText.text = "Нет даты"
                 }
-            } else {
-                dateText.text = "Нет даты"
-            }
-
+          
             titleText.text = item.title ?? "Нет названия"
-            newsText.text = item.content ?? "Нет статьи"
+            newsText.text = item.content
             
             setConstraints()
         }
