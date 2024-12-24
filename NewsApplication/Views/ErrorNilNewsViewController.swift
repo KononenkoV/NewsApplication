@@ -10,7 +10,7 @@ class ErrorNilNewsViewController: UIViewController, ErrorNilNewsViewControllerPr
     var presenter: ErrorNilNewsPresenterProtocol!
         
     // Переменная с результатами поиска
-    var searchedMok = [NewsArticle]()
+    var searchedMok : [Article] = []
     var isSearching = false
        
         lazy var searchBar: UISearchBar = {

@@ -5,6 +5,11 @@
 //  Created by Олег Дмитриев on 18.12.2024.
 //
 
+
+
+
+//ЭТОТ ФАЙЛ КАНДИДАТ НА СТИРАНИЕ ЦЕЛИКОМ
+
 import Foundation
 
 final class NetworkManager {

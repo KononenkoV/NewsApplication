@@ -9,45 +9,61 @@
 import Foundation
 
 protocol ErrorNilNewsPresenterProtocol: AnyObject {
-    var newsFeed: [NewsArticle] {get set}
+    var newsFeed: [Article] {get set}
     func sendRequest()
 }
 
 class ErrorNilNewsPresenter: ErrorNilNewsPresenterProtocol {
     weak var view: ErrorNilNewsViewControllerProtocol?
+
+//  private let vkNetworkManager = NetworkManager.shared
     
-    private let vkNetworkManager = NetworkManager.shared
-    
-    var newsFeed: [NewsArticle] = []
+    private var vkPostManager = VKPostsManager()
+    var vkPosts: [VKResponseItem] = []
+    var newsFeed: [Article] = []
     
     init(view: ErrorNilNewsViewControllerProtocol?) {
         self.view = view
     }
     
+    
+    
     func sendRequest(){
-                Task {
-            do {
-                // Параметры для запроса
-                let searchQuery = "*" // Пустая строка для всех новостей
-                let date = "2024-12-18" // Укажите текущую дату в нужном формате
-                let sortedBy = "publishedAt" // Сортировка по умолчанию
-
-                // Вызов функции
-                let response = try await vkNetworkManager.getNews(searchQuery: searchQuery, date: date, sortedBy: sortedBy)
-                // Обработка ответа
-                print("Ответ получен: \(response)")
+         
+        vkPostManager.sendRequest { [weak self] vkResponce in
+                   self?.vkPosts = vkResponce.response.items
+                   
+//            Трансформирую модель ВК в мою модель
+            self?.vkPosts.forEach { post in
+               
+                var imgUrl: String?
                 
-                newsFeed = response.articles
-                print("Ответ получен: \(newsFeed.count)")
+                guard
+                    let attachments = post.attachments,
+                    let attachment = attachments.first
+                else { return }
                 
-                await self.view?.tableView.reloadData()
+                switch attachment.type {
+                case "photo":
+                    let photo = attachment.photo
+                    imgUrl = photo?.sizes?.first?.url
+                       
+                case "video":
+                    let photo = attachment.video
+                    imgUrl = photo?.image?.last?.url
+                    
+                default:
+                    imgUrl = ""
+                }
                 
-                
-            } catch {
-                // Обработка ошибок
-                print("Ошибка при выполнении запроса: \(error)")
+                let articleItem = Article(title: String(post.text.prefix(20))+"...", urlToImage: imgUrl, url: "vk.com", publishedAt: post.date.description, content: post.text)
+                self?.newsFeed.append(articleItem)
             }
-        }
+                   DispatchQueue.main.async {
+                       self?.view?.tableView.reloadData()
+                   }
+               }
     }
 }
+
 

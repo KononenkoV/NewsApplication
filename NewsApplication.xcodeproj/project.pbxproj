@@ -51,7 +51,6 @@
 			isa = PBXGroup;
 			children = (
 				DD3FBBA22D00CF7C00BEA263 /* NewsApplication */,
-				DDEC25712D1205BF00A0359D /* Frameworks */,
 				DD3FBBA12D00CF7C00BEA263 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -62,13 +61,6 @@
 				DD3FBBA02D00CF7C00BEA263 /* NewsApplication.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		DDEC25712D1205BF00A0359D /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

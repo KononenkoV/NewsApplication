@@ -1,9 +1,4 @@
-//
-//  VKNewsCell.swift
-//  NewsApplication
-//
-//  Created by Вадим Кононенко on 23.12.2024.
-//
+
 
 import UIKit
 
@@ -94,7 +89,7 @@ class VKNewsCell: UITableViewCell {
     }
     
 // Настройка ячейки
-    func setupView(item: NewsArticle) {
+    func setupView(item: Article) {
             // Загрузка изображения
             if let imageUrl = item.urlToImage, let url = URL(string: imageUrl) {
                 newsImage.load(url: url)
@@ -107,15 +102,14 @@ class VKNewsCell: UITableViewCell {
             }
 
             // Преобразую ссылку
-            if let url = URL(string: item.url) {
+            if let url = URL(string: item.url ?? "") {
                 let domain = url.host
                 sourceText.text = domain?.description ?? "Нет ссылки"
             } else {
                 sourceText.text = "Нет ссылки"
             }
 
-        
-             let isoDate = item.publishedAt
+             let isoDate = item.publishedAt ?? ""
                 let isoDateFormatter = ISO8601DateFormatter()
                 isoDateFormatter.formatOptions = [.withInternetDateTime]
                 
